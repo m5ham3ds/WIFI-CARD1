@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="56"
+    android:viewportHeight="56">
+    <!-- Antennas Left and Right -->
+    <path
+        android:fillColor="#757575"
+        android:pathData="M16,6 L18,6 L18,26 L16,26 Z" />
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M15,4 L19,4 L19,8 L15,8 Z" />
+    <path
+        android:fillColor="#757575"
+        android:pathData="M38,6 L40,6 L40,26 L38,26 Z" />
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M37,4 L41,4 L41,8 L37,8 Z" />
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M27,10 L29,10 L29,26 L27,26 Z" />
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M26,8 L30,8 L30,12 L26,12 Z" />
+
+    <!-- Isometric / 3D Router Top Surface -->
+    <path
+        android:fillColor="#ECEFF1"
+        android:pathData="M8,26 L48,26 C50.2,26 52,27.8 52,30 L52,36 L4,36 L4,30 C4,27.8 5.8,26 8,26 Z" />
+
+    <!-- Router Front Bevel -->
+    <path
+        android:fillColor="#CFD8DC"
+        android:pathData="M4,36 L52,36 L50,44 C49.6,45.5 48.3,46.5 46.8,46.5 L9.2,46.5 C7.7,46.5 6.4,45.5 6,44 Z" />
+
+    <!-- High-tech Vent Groove -->
+    <path
+        android:fillColor="#90A4AE"
+        android:pathData="M12,30 L44,30 L44,32 L12,32 Z" />
+
+    <!-- Front LED indicators (Green & Blue) -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M14,40 C14,39.2 14.7,38.5 15.5,38.5 C16.3,38.5 17,39.2 17,40 C17,40.8 16.3,41.5 15.5,41.5 C14.7,41.5 14,40.8 14,40 Z" />
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M20,40 C20,39.2 20.7,38.5 21.5,38.5 C22.3,38.5 23,39.2 23,40 C23,40.8 22.3,41.5 21.5,41.5 C20.7,41.5 20,40.8 20,40 Z" />
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M26,40 C26,39.2 26.7,38.5 27.5,38.5 C28.3,38.5 29,39.2 29,40 C29,40.8 28.3,41.5 27.5,41.5 C26.7,41.5 26,40.8 26,40 Z" />
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M32,40 C32,39.2 32.7,38.5 33.5,38.5 C34.3,38.5 35,39.2 35,40 C35,40.8 34.3,41.5 33.5,41.5 C32.7,41.5 32,40.8 32,40 Z" />
+
+    <!-- Rubber Feet -->
+    <path
+        android:fillColor="#455A64"
+        android:pathData="M10,46 L14,46 L13,48 L11,48 Z" />
+    <path
+        android:fillColor="#455A64"
+        android:pathData="M42,46 L46,46 L45,48 L43,48 Z" />
+</vector>

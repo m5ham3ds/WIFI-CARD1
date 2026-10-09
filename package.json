@@ -1,0 +1,13 @@
+{
+  "name": "wifi-card",
+  "version": "1.0.0",
+  "description": "WiFi Card Master Pro",
+  "scripts": {
+    "dev": "node server.cjs",
+    "start": "node server.cjs",
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "sharp": "^0.35.5"
+  }
+}

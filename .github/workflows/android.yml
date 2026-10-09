@@ -1,0 +1,60 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '9.3.1'
+        validate-wrappers: true
+        cache-disabled: false
+
+    - name: Decode Keystore
+      run: |
+        if [ -f debug.keystore.base64 ]; then
+          echo "Decoding debug.keystore.base64..."
+          base64 --decode debug.keystore.base64 > debug.keystore
+        elif [ ! -z "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" ]; then
+          echo "Decoding from GitHub Secret..."
+          echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > debug.keystore
+        else
+          echo "No keystore found. Generating temporary debug keystore..."
+          keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -storepass android -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+        fi
+        ls -l debug.keystore
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle Wrapper
+      run: ./gradlew assembleDebug --no-daemon
+
+    - name: Prepare WIFI-CARD APK
+      run: |
+        if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
+          cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/WIFI-CARD.apk
+        fi
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: WIFI-CARD
+        path: app/build/outputs/apk/debug/WIFI-CARD.apk

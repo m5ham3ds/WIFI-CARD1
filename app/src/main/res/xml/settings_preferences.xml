@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/pref_category_appearance">
+        <ListPreference
+            app:key="theme"
+            app:title="@string/pref_theme"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:defaultValue="system"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:key="app_language"
+            app:title="@string/pref_language"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:defaultValue="system"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_primary_color">
+        <Preference
+            app:key="primary_color_picker"
+            app:title="@string/pref_primary_color"
+            app:summary="@string/pref_primary_color_summary"
+            app:icon="@drawable/bg_circle_red" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_notifications">
+        <SwitchPreferenceCompat
+            app:key="vibrate_on_success"
+            app:title="@string/pref_vibrate"
+            app:defaultValue="true" />
+        <SwitchPreferenceCompat
+            app:key="sound_on_success"
+            app:title="@string/pref_sound"
+            app:defaultValue="false" />
+    </PreferenceCategory>
+
+    <!-- Delay Settings -->
+    <PreferenceCategory app:title="@string/pref_category_delay">
+        <ListPreference
+            app:key="page_load_delay"
+            app:title="@string/pref_page_load_delay"
+            app:summary="@string/pref_page_load_delay_summary"
+            app:entries="@array/delay_entries"
+            app:entryValues="@array/delay_values"
+            app:defaultValue="2000"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:key="card_test_delay"
+            app:title="@string/pref_card_test_delay"
+            app:summary="@string/pref_card_test_delay_summary"
+            app:entries="@array/delay_entries"
+            app:entryValues="@array/delay_values"
+            app:defaultValue="3000"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:key="screenshot_delay"
+            app:title="@string/pref_screenshot_delay"
+            app:summary="@string/pref_screenshot_delay_summary"
+            app:entries="@array/screenshot_delay_entries"
+            app:entryValues="@array/screenshot_delay_values"
+            app:defaultValue="2000"
+            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="reset_delays"
+            app:title="@string/pref_reset_delays"
+            app:summary="@string/pref_reset_delays_summary"
+            app:icon="@drawable/ic_info" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_test_background">
+        <SwitchPreferenceCompat
+            app:key="enable_preload_pages"
+            app:title="@string/pref_enable_preload"
+            app:summary="@string/pref_enable_preload_summary"
+            app:defaultValue="true" />
+        <ListPreference
+            app:key="thread_count"
+            app:title="@string/pref_thread_count"
+            app:summary="@string/pref_thread_count_summary"
+            app:entries="@array/preload_pages_entries"
+            app:entryValues="@array/preload_pages_values"
+            app:defaultValue="5"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_data">
+        <Preference
+            app:key="manage_routers"
+            app:title="@string/pref_manage_routers"
+            app:icon="@drawable/ic_router" />
+        <Preference
+            app:key="clear_history"
+            app:title="@string/pref_clear_history"
+            app:icon="@drawable/ic_delete" />
+        <Preference
+            app:key="export_db"
+            app:title="@string/pref_export_db"
+            app:icon="@drawable/ic_export" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_category_about">
+        <Preference
+            app:key="version"
+            app:title="@string/pref_version"
+            app:icon="@drawable/ic_info" />
+        <Preference
+            app:key="github"
+            app:title="@string/pref_github"
+            app:icon="@drawable/ic_github" />
+    </PreferenceCategory>
+</PreferenceScreen>

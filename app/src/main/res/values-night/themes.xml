@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.WiFiCardMasterPro" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Default Primary Brand Color (Red is default on first install) -->
+        <item name="colorPrimary">@color/theme_red_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/theme_red_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+
+        <!-- Secondary Brand Color -->
+        <item name="colorSecondary">@color/theme_red_primary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/theme_red_transparent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+
+        <!-- Tertiary Color (Warning / Ongoing Tests) -->
+        <item name="colorTertiary">@color/warning_orange</item>
+        <item name="colorOnTertiary">@color/black</item>
+
+        <!-- Background & Surface Colors (Deep space-neutral themed) -->
+        <item name="android:windowBackground">@color/neutral_background</item>
+        <item name="android:colorBackground">@color/neutral_background</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorSurface">@color/neutral_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/neutral_background</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+
+        <!-- Outlines & Borders -->
+        <item name="colorOutline">@color/neutral_border</item>
+        <item name="colorOutlineVariant">@color/neutral_border</item>
+
+        <!-- Custom Bottom Navigation Style -->
+        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+
+        <!-- Error State -->
+        <item name="colorError">@color/error_red</item>
+        <item name="colorOnError">@color/white</item>
+
+        <!-- Result Semantic Color Tokens (Dark Theme) -->
+        <item name="colorSuccessNormal">@color/result_success_normal_dark</item>
+        <item name="colorSuccessTwoDevices">@color/result_success_two_devices_dark</item>
+        <item name="colorFailure">@color/result_failure_dark</item>
+        <item name="colorWarning">@color/result_warning_dark</item>
+        <item name="colorNetworkError">@color/result_network_error_dark</item>
+        <item name="colorEngineError">@color/result_engine_error_dark</item>
+
+        <!-- Status Bar & Navigation Bar -->
+        <item name="android:statusBarColor">#FF000000</item>
+        <item name="android:navigationBarColor">@color/neutral_surface</item>
+    </style>
+
+    <!-- Dynamic Theme 1: Red (Default) -->
+    <style name="Theme.WiFiCardMasterPro.Red" parent="Theme.WiFiCardMasterPro">
+        <item name="colorPrimary">@color/theme_red_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/theme_red_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/theme_red_primary</item>
+        <item name="colorSecondaryContainer">@color/theme_red_transparent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+    </style>
+
+    <!-- Dynamic Theme 2: Blue -->
+    <style name="Theme.WiFiCardMasterPro.Blue" parent="Theme.WiFiCardMasterPro">
+        <item name="colorPrimary">@color/theme_blue_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/theme_blue_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/theme_blue_primary</item>
+        <item name="colorSecondaryContainer">@color/theme_blue_transparent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+    </style>
+
+    <!-- Dynamic Theme 3: Purple -->
+    <style name="Theme.WiFiCardMasterPro.Purple" parent="Theme.WiFiCardMasterPro">
+        <item name="colorPrimary">@color/theme_purple_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/theme_purple_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/theme_purple_primary</item>
+        <item name="colorSecondaryContainer">@color/theme_purple_transparent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+    </style>
+
+    <!-- Dynamic Theme 4: Yellow -->
+    <style name="Theme.WiFiCardMasterPro.Yellow" parent="Theme.WiFiCardMasterPro">
+        <item name="colorPrimary">@color/theme_yellow_primary</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimaryContainer">@color/theme_yellow_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/theme_yellow_primary</item>
+        <item name="colorSecondaryContainer">@color/theme_yellow_transparent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+    </style>
+
+    <!-- Dynamic Theme 5: Green -->
+    <style name="Theme.WiFiCardMasterPro.Green" parent="Theme.WiFiCardMasterPro">
+        <item name="colorPrimary">@color/theme_green_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/theme_green_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/theme_green_primary</item>
+        <item name="colorSecondaryContainer">@color/theme_green_transparent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+    </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorSecondaryContainer">@color/theme_red_transparent</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+    </style>
+</resources>

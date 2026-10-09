@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Circular Background with subtle shadow/border -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M32,4 C47.46,4 60,16.54 60,32 C60,47.46 47.46,60 32,60 C16.54,60 4,47.46 4,32 C4,16.54 16.54,4 32,4 Z" />
+    <path
+        android:fillColor="#FFEBEE"
+        android:pathData="M32,8 C45.25,8 56,18.75 56,32 C56,45.25 45.25,56 32,56 C18.75,56 8,45.25 8,32 C8,18.75 18.75,8 32,8 Z" />
+    <!-- WiFi Wave 1 Outer -->
+    <path
+        android:fillColor="#D32F2F"
+        android:pathData="M16,23.5 C20.6,18.9 26.2,16.5 32,16.5 C37.8,16.5 43.4,18.9 48,23.5 L45.2,26.3 C41.3,22.4 36.8,20.5 32,20.5 C27.2,20.5 22.7,22.4 18.8,26.3 Z" />
+    <!-- WiFi Wave 2 Middle -->
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M21.5,29 C24.5,26 28.1,24.5 32,24.5 C35.9,24.5 39.5,26 42.5,29 L39.7,31.8 C37.4,29.5 34.8,28.5 32,28.5 C29.2,28.5 26.6,29.5 24.3,31.8 Z" />
+    <!-- Smart Card / Chip Body in center -->
+    <path
+        android:fillColor="#C62828"
+        android:pathData="M22,34 L42,34 C44.2,34 46,35.8 46,38 L46,47 C46,49.2 44.2,51 42,51 L22,51 C19.8,51 18,49.2 18,47 L18,38 C18,35.8 19.8,34 22,34 Z" />
+    <!-- Golden Chip Detail -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M27,39 L37,39 C37.6,39 38,39.4 38,40 L38,45 C38,45.6 37.6,46 37,46 L27,46 C26.4,46 26,45.6 26,45 L26,40 C26,39.4 26.4,39 27,39 Z" />
+    <path
+        android:fillColor="#FFA000"
+        android:pathData="M30,39 L34,39 L34,46 L30,46 Z" />
+</vector>

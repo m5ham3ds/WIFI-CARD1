@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Radio Waves Left & Right -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.8"
+        android:pathData="M16,14 C13,17 13,23 16,26 L14,28 C10,24 10,16 14,12 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.9"
+        android:pathData="M32,14 C35,17 35,23 32,26 L34,28 C38,24 38,16 34,12 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.5"
+        android:pathData="M11,9 C6,15 6,25 11,31 L9,33 C3,26 3,14 9,7 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.5"
+        android:pathData="M37,9 C42,15 42,25 37,31 L39,33 C45,26 45,14 39,7 Z" />
+
+    <!-- Tower Central Pole -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M23,10 L25,10 L25,42 L23,42 Z" />
+    <!-- Tower Beacon Circle -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M24,6 C25.66,6 27,7.34 27,9 C27,10.66 25.66,12 24,12 C22.34,12 21,10.66 21,9 C21,7.34 22.34,6 24,6 Z" />
+    <!-- Tower Lattice / Struts -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M19,42 L24,20 L29,42" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M20.5,35 L27.5,35" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M21.5,28 L26.5,28" />
+</vector>

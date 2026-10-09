@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WiFi Card Master Pro</string>
+    <string name="app_subtitle">أداة فحص بطاقات الهوت سبوت</string>
+    <string name="default_router_name">الراوتر الافتراضي</string>
+
+    <!-- Navigation Labels -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_test">الاختبار</string>
+    <string name="nav_history">السجلات</string>
+    <string name="nav_settings">الإعدادات</string>
+    <string name="nav_router_manager">إدارة أجهزة الراوتر</string>
+    <string name="nav_router_form">بيانات الراوتر</string>
+
+    <!-- Menus -->
+    <string name="menu_drawer">القائمة الجانبية</string>
+    <string name="btn_back">رجوع</string>
+    <string name="menu_router_manager">إدارة أجهزة الراوتر</string>
+    <string name="menu_additional_options">خيارات إضافية</string>
+    <string name="menu_home">الرئيسية</string>
+    <string name="menu_test">الاختبار</string>
+    <string name="menu_history">السجلات</string>
+    <string name="menu_settings">الإعدادات</string>
+    <string name="menu_about">حول التطبيق</string>
+    <string name="menu_exit">الخروج</string>
+
+    <string name="status_connected">متصل بجهاز الراوتر</string>
+    <string name="status_disconnected">غير متصل</string>
+
+    <string name="channel_test_name">خدمة الاختبار الجاري</string>
+    <string name="channel_test_desc">تحديثات مستمرة حول تقدم الفحص والخيارات الإضافية</string>
+    <string name="channel_result_name">نتائج الاختبار الفوري</string>
+    <string name="channel_result_desc">إشعارات عند نجاح أو فشل الكروت المحددة</string>
+
+    <string name="notification_title">فاحص بطاقات WiFi</string>
+    <string name="notification_content">التقدم: %1$d/%2$d | ناجحة: %3$d | فاشلة: %4$d</string>
+    <string name="notification_success_title">تم العثور على بطاقة صالحة!</string>
+    <string name="notification_failure_title">فشل اختبار البطاقة</string>
+    <string name="notification_result_body">كود البطاقة المكتشفة: %1$s</string>
+
+    <string name="btn_cancel">إلغاء</string>
+    <string name="btn_save">حفظ</string>
+    <string name="btn_close">إغلاق</string>
+    <string name="btn_confirm_delete">نعم، احذف الكل</string>
+    <string name="action_pause_icon">إيقاف مؤقت</string>
+    <string name="action_resume_icon">استئناف</string>
+
+    <string name="history_cleared">تم مسح السجل بنجاح</string>
+    <string name="router_added">تمت إضافة الراوتر الجديد</string>
+    <string name="router_updated">تم تحديث بيانات الراوتر</string>
+    <string name="router_deleted">تم حذف ملف الراوتر</string>
+
+    <string name="pref_category_appearance">المظهر والتصميم</string>
+    <string name="pref_theme">اختيار السمة</string>
+    <string name="pref_language">لغة التطبيق</string>
+    <string name="pref_category_primary_color">لون التطبيق</string>
+    <string name="pref_primary_color">اللون الرئيسي للتطبيق</string>
+    <string name="pref_primary_color_summary">اختر اللون الأساسي لواجهة التطبيق (الافتراضي: أحمر)</string>
+    <string name="dialog_color_confirm_title">تغيير اللون</string>
+    <string name="dialog_color_confirm_msg">هل تريد استخدام هذا اللون كلون رئيسي للتطبيق؟</string>
+    <string name="dialog_color_confirm_pos">تأكيد</string>
+    <string name="dialog_color_confirm_neg">إلغاء</string>
+    <string name="color_name_red">أحمر</string>
+    <string name="color_name_blue">أزرق</string>
+    <string name="color_name_purple">بنفسجي</string>
+    <string name="color_name_yellow">أصفر</string>
+    <string name="color_name_green">أخضر</string>
+    <string name="color_preview_btn">زر معاينة</string>
+    <string name="color_currently_selected">المحدد حالياً</string>
+
+    <string name="pref_category_notifications">الإشعارات والتنبيهات</string>
+    <string name="pref_vibrate">الاهتزاز عند الحصول على بطاقة صالحة</string>
+    <string name="pref_sound">تشغيل صوت للتنبيه</string>
+    <string name="pref_success_action_title">الإجراء عند نجاح البطاقة</string>
+    <string name="pref_success_action_summary">تحديد الإجراء المطلوب عند العثور على بطاقة ناجحة</string>
+    <string name="strategy_selector_title">استراتيجية اختبار الراوتر</string>
+    <string name="pref_category_data">إدارة البيانات</string>
+    <string name="pref_manage_routers">إعداد ملفات الراوتر</string>
+    <string name="pref_clear_history">مسح سجل الجلسات بالكامل</string>
+    <string name="pref_export_db">تصدير نسخة احتياطية من السجلات</string>
+    <string name="pref_category_about">حول</string>
+    <string name="pref_version">رقم الإصدار الحالي</string>
+    <string name="pref_github">مستودع الكود على جيت هاب</string>
+
+    <string name="msg_confirm_clear">هل أنت متأكد تماماً من رغبتك في حذف جميع السجلات؟</string>
+    <string name="about_title">حول التطبيق</string>
+    <string name="about_message">برنامج WiFi Card Master Pro هو أداة متكاملة وذكية مخصصة لاختبار بطاقات هوت سبوت للراوتر، مع أتمتة كاملة وحفظ تلقائي للبطاقات الناجحة في قواعد بيانات مشفرة وآمنة.</string>
+    <string name="auto_string_1">إيقاف مؤقت</string>
+    <string name="auto_string_2">إلغاء الأمر</string>
+    <string name="auto_string_3">حفظ الإعدادات</string>
+    <string name="auto_string_4">تم تسجيل الدخول بنجاح</string>
+    <string name="auto_string_5">اسم المستخدم أو كلمة المرور خاطئة</string>
+    <string name="auto_string_6">إلغاء الأمر</string>
+    <string name="auto_string_7">ملف تعريف جهاز جديد</string>
+    <string name="auto_string_8">تم تسجيل الدخول بنجاح</string>
+    <string name="auto_string_9">اسم المستخدم أو كلمة المرور خاطئة</string>
+    <string name="auto_string_10">حفظ التعريف</string>
+    <string name="auto_string_11">عنوان التنبيه</string>
+    <string name="auto_string_12">هذا هو نص الرسالة التنبيهية لتأكيد العملية أو إظهار الخطأ وتوضيح التفاصيل للتطبيق بشكل ممتاز ومقروء.</string>
+    <string name="auto_string_13">تأكيد</string>
+    <string name="auto_string_14">إلغاء</string>
+    <string name="auto_string_15">إغلاق</string>
+    <string name="auto_string_16">جاري الاختبار</string>
+    <string name="auto_string_17">فحص بطاقات الهوت سبوت...</string>
+    <string name="auto_string_18">الكل: </string>
+    <string name="auto_string_19">إيقاف مؤقت</string>
+    <string name="auto_string_20">إلغاء وايقاف</string>
+    <string name="auto_string_21">رجوع للجلسات</string>
+    <string name="auto_string_22">تصدير النتائج</string>
+    <string name="auto_string_23">الكل</string>
+    <string name="auto_string_24">الناجحة فقط</string>
+    <string name="filter_two_devices">مستعملة بجهازين</string>
+    <string name="auto_string_25">الفاشلة فقط</string>
+    <string name="auto_string_26">لا توجد بيانات سجلات متاحة حالياً</string>
+    <string name="auto_string_27">لا توجد أجهزة راوتر مضافة للعمليات</string>
+    <string name="auto_string_28">🔄 جارٍ</string>
+    <string name="auto_string_29">اختر ملف الراوتر المستهدف</string>
+    <string name="auto_string_30">إعدات توليد بطاقات الهوت سبوت</string>
+    <string name="auto_string_31">تقدم الاختبار الجاري:</string>
+    <string name="auto_string_32">بدء عملية الاختبار</string>
+    <string name="auto_string_33">إيقاف الاختبار</string>
+    <string name="auto_string_34">سجل العمليات المباشر</string>
+    <string name="auto_string_35">مسح</string>
+    <string name="auto_string_36">افتراضي</string>
+    <string name="auto_string_37">تعيين كافتراضي</string>
+    <string name="auto_string_38">تعديل</string>
+    <string name="auto_string_39">حذف</string>
+    <string name="auto_string_40">تأكيد</string>
+    <string name="auto_string_41">اهلاً بك في WiFi Master Pro 👋</string>
+    <string name="auto_string_42">هذه البرنامج متخصص في عمل تخمينات بطريقة احترافية و مميز و سرعة لكرت الشبكة اي ( كرت الواي فاي ) ⚡</string>
+    <string name="auto_string_43">لكي تستطيع استخدام الخدمة يجب ان تقوم بادخال كلمة السر لفتح معك البرنامج 🔒</string>
+    <string name="auto_string_44">ملاحظة هذه الصفحة تظهر فقط عندما تأكون لم تؤكد كلمة السر بعد التأكد ستختفي نهائياً أيضا هناك 3 محاولة فقط لادخال كلمة السر اذا تمت بشكل خاطئ سيقفل البرنامج بل كامل و يطلب منك حذف البرنامج و تثبيته مجددا ⚠️</string>
+    <string name="auto_string_45">المطور : MOHAMED 👨‍💻</string>
+    <string name="auto_string_46">هنا وسائل التواصل الاجتماعي مثل الفيسبوك و التويتر و التلجرام و الانستغرام و الواتساب و التيك توك 🌐</string>
+    <string name="auto_string_47">المطور : MOHAMED 👨‍💻</string>
+    <string name="auto_string_48">تم قفل البرنامج بشكل دائم 🚫</string>
+    <string name="auto_string_49">تم اكتشاف محاولة غير مصرح بها للوصول أو استخدام البرنامج.\nللحفاظ على أمان بياناتك، تم قفل البرنامج بشكل دائم. 🛑</string>
+    <string name="auto_string_50">لا يمكن استخدام البرنامج بعد الآن. يرجى حذف التطبيق بالكامل وإعادة تثبيته من المصدر الرسمي. 🗑️</string>
+    <string name="auto_string_51">حذف التطبيق 🗑️</string>
+    <string name="auto_string_52">بعد حذف التطبيق، يرجى إعادة تثبيته من الموقع الرسمي للحصول على نسخة آمنة. ⬇️</string>
+    <string name="auto_string_53">تحتاج إلى مساعدة؟\nتواصل معنا 📞</string>
+    <string name="auto_string_enter_password">قم بإدخال كلمة السر :</string>
+    <string name="pref_category_test_background">إعدادات الاختبار والخلفية</string>
+    <string name="pref_enable_preload">تفعيل التحميل في الخلفية</string>
+    <string name="pref_enable_preload_summary">تحميل الصفحات مسبقاً لتسريع عملية الفحص</string>
+    <string name="pref_thread_count">عدد الصفحات المحملة بالخلفية</string>
+    <string name="pref_thread_count_summary">حدد عدد الصفحات (1-30) لتسريع الفحص</string>
+    <string name="pref_category_delay">إعدادات سرعة الفحص والانتظار</string>
+    <string name="pref_page_load_delay">مدة انتظار تحميل صفحة الدخول</string>
+    <string name="pref_page_load_delay_summary">حدد الوقت الذي سينتظره التطبيق حتى تكتمل الصفحة قبل وضع البطاقة</string>
+    <string name="pref_card_test_delay">مدة انتظار نتيجة البطاقة</string>
+    <string name="pref_card_test_delay_summary">حدد الوقت الذي سينتظره التطبيق لقراءة نتيجة (نجاح أو فشل) قبل الانتقال للبطاقة التالية</string>
+    <string name="pref_reset_delays">إرجاع أوقات الانتظار للوضع الافتراضي</string>
+    <string name="pref_reset_delays_summary">إرجاع وقت تحميل الصفحة لـ 2 ثانية، ووقت الانتظار للنتيجة لـ 3 ثانية</string>
+    <string name="pref_screenshot_delay">سرعة تحديث البث المباشر</string>
+    <string name="pref_screenshot_delay_summary">حدد سرعة تحديث صورة المتصفح (الفيديو) أثناء الفحص</string>
+    <string name="msg_reset_success">تم إرجاع الإعدادات للوضع الافتراضي بنجاح</string>
+    <string name="main_version_info">\n\nالإصدار: 1.0.0-Stable\nحقوق النشر © 2026 جميع الحقوق محفوظة</string>
+    <string name="main_confirm_exit_title">تأكيد الخروج</string>
+    <string name="main_confirm_exit_msg">هل أنت متأكد من رغبتك في الخروج من التطبيق؟</string>
+    <string name="main_exit">خروج</string>
+    <string name="main_cancel">إلغاء</string>
+    <string name="security_verifying">جاري التحقق من كلمة السر...</string>
+    <string name="security_verified">تم التأكد و جاري تحويلك الى الصفحة الرئيسية...</string>
+    <string name="notification_paused"> (موقوف مؤقتاً)</string>
+    <string name="notification_resume">استئناف</string>
+    <string name="notification_pause">إيقاف مؤقت</string>
+    <string name="notification_cancel">إيقاف</string>
+    <string name="notification_state_paused">موقوف مؤقتاً</string>
+    <string name="notification_state_active">جاري الفحص النشط...</string>
+    <string name="notification_current_card">البطاقة الحالية: </string>
+    <string name="security_wrong_password">كلمة المرور غير صحيحة، تبقى لك %1$s محاولة</string>
+    <string name="dialog_ok">موافق</string>
+    <string name="test_status_init">حالة الاختبار: جاري التهيأة...</string>
+    <string name="test_live_stream">بث حي ومباشر من المتصفح المعزول:</string>
+    <string name="test_cancel_log">إلغاء وفصل</string>
+    <string name="dialog_router_hint_file">اسم الملف (مثال: مستخدم راوتر 1)</string>
+    <string name="dialog_router_hint_ip">عنوان IP أو المضيف (IP / Hostname)</string>
+    <string name="dialog_router_hint_path">مسار صفحة تسجيل الدخول</string>
+    <string name="dialog_router_hint_user_css">معرف حقل اسم المستخدم (CSS Selector)</string>
+    <string name="dialog_router_hint_pass_css">معرف حقل كود البطاقة (CSS Selector)</string>
+    <string name="dialog_router_hint_submit">معرف زر الإرسال / انتر</string>
+    <string name="dialog_router_hint_default_user">اسم المستخدم الافتراضي</string>
+    <string name="dialog_router_hint_success">مؤشر النجاح (كلمة بالصفحة)</string>
+    <string name="dialog_router_hint_failure">مؤشر الفشل (كلمة بالصفحة)</string>
+    <string name="dialog_router_hint_logout">معرف زر تسجيل الخروج (اختياري)</string>
+    <string name="frag_router_title">إضافة ملف تعريف جديد</string>
+    <string name="frag_router_conn_data">بيانات الاتصال الأساسية</string>
+    <string name="frag_router_proto">بروتوكول الويب:</string>
+    <string name="frag_router_css_title">محددات عناصر الصفحة CSS Selectors</string>
+    <string name="frag_router_indicators">مؤشرات الاتصال والتحقق</string>
+    <string name="home_manage_routers">إدارة أجهزة الراوتر</string>
+    <string name="home_hint_prefix">البادئة (Prefix)</string>
+    <string name="home_hint_length">الطول (Length)</string>
+    <string name="home_hint_charset">مجموعة الأحرف (Charset)</string>
+    <string name="home_hint_count">عدد البطاقات المطلوب توليدها</string>
+
+    <!-- Test Fragment State & Dialogs -->
+    <string name="test_status_running">حالة الاختبار: جاري الفحص النشط...</string>
+    <string name="test_status_paused">حالة الاختبار: موقوف مؤقتاً</string>
+    <string name="test_status_done">حالة الاختبار: تم إكمال الفحص كلياً</string>
+    <string name="test_status_load_error">حالة الاختبار: فشل في تحميل الصفحة</string>
+    <string name="test_status_cancelled">حالة الاختبار: تم الإلغاء</string>
+    <string name="test_status_idle">حالة الاختبار: خامل (لا توجد عملية جارية)</string>
+    <string name="test_active_card_format">البطاقة الحالية للفحص: %1$s (%2$d/%3$d)</string>
+    <string name="test_no_active_cards">لا توجد بطاقات قيد الفحص حالياً</string>
+    <string name="test_btn_pause">إيقاف مؤقت</string>
+    <string name="test_btn_resume">استئناف</string>
+    <string name="test_completed_toast">اكتمل الاختبار الجاري بنجاح!</string>
+    <string name="dialog_cancel_test_title">إلغاء الاختبار</string>
+    <string name="dialog_cancel_test_msg">هل أنت متأكد من رغبتك في إلغاء عملية فحص وتحليل البطاقات الجارية؟</string>
+    <string name="dialog_cancel_test_pos">نعم، إلغاء</string>
+    <string name="dialog_cancel_test_neg">لا، استمرار</string>
+    <string name="dialog_load_error_title">فشل تحميل الصفحة</string>
+    <string name="dialog_load_error_msg">لم نتمكن من الوصول لصفحة تسجيل الدخول للراوتر.\nيرجى التأكد من أنك متصل بشبكة الواي فاي للراوتر وقريب منه، ثم أعد المحاولة.\n\nالخطأ: %1$s</string>
+    <string name="dialog_retry">إعادة المحاولة</string>
+    <string name="dialog_cancel_and_back">إلغاء والعودة</string>
+
+    <!-- Home Fragment Stats & Dialogs -->
+    <string name="home_stat_total">الإجمالي المولد</string>
+    <string name="home_stat_success">البطاقات الناجحة</string>
+    <string name="home_stat_success_with_two_devices">البطاقات الناجحة (%1$d عادي | %2$d جهازين)</string>
+    <string name="home_stat_failure">البطاقات الفاشلة</string>
+    <string name="dialog_wifi_disconnected_title">تنبيه: غير متصل بالواي فاي</string>
+    <string name="dialog_wifi_disconnected_msg">أنت غير متصل بشبكة الواي فاي حالياً. يرجى الاتصال بالشبكة لكي تتمكن من الوصول لصفحة تسجيل دخول الراوتر واختبار البطاقات بنجاح.</string>
+    <string name="dialog_wifi_disconnected_pos">حسناً، فهمت</string>
+    <string name="dialog_test_running_title">عملية جارية بالفعل</string>
+    <string name="dialog_test_running_msg">هناك عملية فحص جارية حالياً على الراوتر المختار. هل تود إلغاء العملية الجارية والبدء مجدداً بعملية فحص جديدة، أم تود المتابعة ومراقبة الفحص الحالي؟</string>
+    <string name="dialog_test_running_cancel_start">إلغاء والبدء من جديد</string>
+    <string name="dialog_test_running_monitor">المتابعة ومراقبة الفحص الحالي</string>
+    <string name="dialog_test_running_close">إغلاق</string>
+    <string name="dialog_stop_test_title">تأكيد إلغاء الفحص الجاري</string>
+    <string name="dialog_stop_test_msg">هل أنت متأكد من رغبتك في إلغاء عملية الفحص الجارية للبطاقات؟ سيتم إيقاف فحص وتجربة البطاقات كلياً.</string>
+    <string name="dialog_stop_test_pos">نعم، إلغاء الفحص</string>
+    <string name="dialog_stop_test_neg">لا، استمرار العمل</string>
+    <string name="toast_test_cancelled">تم إلغاء عملية الفحص بنجاح!</string>
+    <string name="dialog_clear_logs_title">تأكيد حذف السجلات</string>
+    <string name="dialog_clear_logs_msg">هل أنت متأكد من رغبتك في حذف جميع سجلات الفحص والبطاقات وتصفير الإحصائيات بالكامل؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="dialog_clear_logs_pos">نعم، احذف وصفر الإحصائيات</string>
+    <string name="dialog_clear_logs_neg">إلغاء وإبقاء</string>
+    <string name="toast_logs_cleared">تم مسح جميع السجلات وتصفير الإعدادات بنجاح!</string>
+    <string name="toast_service_start_failed">فشل بدء خدمة المزامنة بالخلفية: %1$s</string>
+
+    <!-- Router Manager & Router Form -->
+    <string name="dialog_delete_router_title">حذف ملف التعريف</string>
+    <string name="dialog_delete_router_msg">هل أنت متأكد من رغبتك في حذف ملف \'%1$s\'؟</string>
+    <string name="dialog_delete_router_pos">حذف</string>
+    <string name="router_form_title_add">إضافة راوتر مستهدف جديد</string>
+    <string name="router_form_title_edit">تعديل بيانات الراوتر</string>
+    <string name="router_form_validation_err">الرجاء تعبئة كافة الحقول المطلوبة بنجاح</string>
+    <string name="router_form_saved">تم حفظ ملف تعريف الراوتر بنجاح</string>
+    <string name="toast_export_db_info">الرجاء الذهاب إلى السجل وتحديد جلسة معينة لتصدير نتائجها بشكل مخصص وسريع</string>
+
+    <!-- Semantic Result Texts -->
+    <string name="result_success_normal">✓ تم تسجيل البطاقة بنجاح</string>
+    <string name="result_success_two_devices">✓ البطاقة صالحة (مستعملة بجهازين)</string>
+    <string name="result_failure_default">✗ البطاقة غير صالحة</string>
+    <string name="result_timeout_default">⏱ انتهت مهلة الاستجابة</string>
+    <string name="result_network_error_default">🌐 تعذر الاتصال بالشبكة</string>
+    <string name="result_engine_error_default">⚙️ حدث خطأ أثناء تنفيذ الاختبار</string>
+
+    <!-- Additional UI Strings -->
+    <string name="lang_ar">العربية</string>
+    <string name="lang_en">English</string>
+    <string name="header_history_sub">سجل الجلسات والبطاقات المفحوصة</string>
+    <string name="header_settings_sub">تخصيص النظام والمظهر العام</string>
+    <string name="header_router_manager_sub">ملفات تعريف بوابات الهوت سبوت</string>
+    <string name="header_router_form_title">ملف الراوتر</string>
+    <string name="header_router_form_sub">تعديل إعدادات الاتصال والبوابة</string>
+    <string name="cannot_clear_history_active">لا يمكن مسح السجل أثناء وجود جلسة فحص نشطة</string>
+    <string name="export_share_title">مشاركة وتصدير السجلات</string>
+    <string name="export_success_toast">تم تصدير جميع السجلات بنجاح إلى: %1$s</string>
+    <string name="export_failed_toast">فشل تصدير السجلات: %1$s</string>
+    <string name="delay_saved_toast">تم حفظ مدة الانتظار: %1$s</string>
+    <string name="thread_count_saved_toast">تم حفظ عدد الصفحات: %1$s</string>
+    <string name="pref_page_load_title">مدة انتظار تحميل صفحة الدخول</string>
+    <string name="pref_card_test_title">مدة انتظار نتيجة البطاقة</string>
+    <string name="pref_screenshot_title">سرعة تحديث البث المباشر</string>
+    <string name="pref_thread_count_title">عدد الصفحات المحملة بالخلفية</string>
+
+    <string name="home_router_connected">متصل بجهاز الراوتر</string>
+    <string name="home_router_disconnected">غير متصل بالراوتر</string>
+    <string name="home_router_connected_desc">تم الاتصال بنجاح. يمكنك البدء بالاختبار</string>
+    <string name="home_router_disconnected_desc">يرجى التأكد من اتصال هاتفك بشبكة الواي فاي</string>
+    <string name="home_select_target_router">اختر ملف الراوتر المستهدف</string>
+    <string name="home_card_gen_settings">إعدادات توليد بطاقات الهوت سبوت</string>
+    <string name="home_failed_cards_sub">غير صالحة</string>
+    <string name="home_success_cards_sub">فعالة وموثوقة</string>
+    <string name="home_total_cards_sub">تمت تجربتها</string>
+    <string name="home_scan_progress">تقدم الفحص الحالي:</string>
+    <string name="home_stop_scan">إيقاف الفحص</string>
+    <string name="home_start_scan">بدء عملية الإختبار</string>
+    <string name="home_scanning_active">جاري الفحص...</string>
+    <string name="home_live_log_title">سجل العمليات المباشر</string>
+    <string name="home_clear_log">مسح</string>
+    <string name="home_no_logs_yet">لا توجد سجلات بعد</string>
+    <string name="home_logs_appear_here">ستظهر نتائج الإختبار هنا بشكل مباشر...</string>
+    <string name="home_select_router_dialog_title">اختيار الراوتر المستهدف</string>
+    <string name="home_select_router_error">الرجاء اختيار راوتر أولاً</string>
+    <string name="home_generate_cards_error">فشل توليد البطاقات</string>
+
+    <string name="test_screen_title">بث الشاشة المباشر للـ WebView</string>
+    <string name="test_portal_heading">بوابة تسجيل الدخول إلى الشبكة</string>
+    <string name="test_logging_in">تسجيل الدخول...</string>
+    <string name="test_submitting_req">جاري إرسال الطلب وتحليل الرد الفوري...</string>
+    <string name="test_standby_title">بث الشاشة في وضع الاستعداد</string>
+    <string name="test_completed_title">اكتمل فحص الجلسة بنجاح</string>
+    <string name="test_completed_desc">تم حفظ نتائج جميع البطاقات في قاعدة البيانات. يمكنك مراجعة التفاصيل في سجل الجلسات.</string>
+    <string name="test_standby_desc">سيبدأ بث الشاشة المباشر وتفاعل المتصفح المعزول مع البوابة فور انطلاق دورة الفحص من الصفحة الرئيسية.</string>
+    <string name="test_btn_cancel_disconnect">إلغاء وفصل</string>
+    <string name="test_btn_return_home">العودة للرئيسية</string>
+    <string name="test_btn_new_test">فحص جديد</string>
+    <string name="test_btn_start_test">بدء عملية فحص</string>
+    <string name="test_status_label">حالة الاختبار :</string>
+    <string name="status_testing">جاري الفحص</string>
+    <string name="status_completed">مكتمل</string>
+    <string name="status_idle">خامل</string>
+    <string name="test_status_active_stream_desc">يتم فحص البطاقات بشكل مباشر من المتصفح المعزول عبر لقطات حية</string>
+    <string name="test_status_done_desc">تم اكتمال دورة الفحص لجميع البطاقات المحددة بنجاح</string>
+    <string name="test_status_idle_desc">لا توجد عملية فحص نشطة حالياً. ابدأ عملية فحص جديدة للتشغيل.</string>
+    <string name="test_completed_cards_format">اكتمل الفحص: %1$d كرت</string>
+
+    <string name="settings_group_appearance">المظهر وتخصيص الواجهة</string>
+    <string name="settings_group_delays">أوقات الانتظار والتأخير</string>
+    <string name="settings_group_background">إعدادات الاختبار والخلفية</string>
+    <string name="settings_group_data">إدارة البيانات</string>
+    <string name="settings_group_about">حول</string>
+    <string name="settings_preload_title">تفعيل التحميل في الخلفية</string>
+    <string name="settings_preload_sub">تحميل الصفحات مسبقاً لتسريع عملية الفحص</string>
+    <string name="settings_router_config_title">إعداد ملفات الراوتر</string>
+    <string name="settings_router_config_sub">إضافة وتعديل وحذف ملفات الراوتر</string>
+    <string name="settings_clear_history_title">مسح سجل الجلسات بالكامل</string>
+    <string name="settings_clear_history_sub">حذف جميع بيانات الاختبار السابقة نهائياً</string>
+    <string name="settings_export_backup_title">تصدير نسخة احتياطية من السجلات</string>
+    <string name="settings_export_backup_sub">حفظ السجلات بصيغة JSON</string>
+    <string name="settings_version_title">رقم الإصدار الحالي</string>
+    <string name="settings_github_title">مستودع الكود على جيت هاب</string>
+    <string name="settings_reset_delays_title">إعادة ضبط أوقات الانتظار للافتراضي</string>
+    <string name="settings_reset_delays_sub">إرجاع وقت تحميل للصفحة لـ 2 ثانية، ووقت الانتظار للنتيجة لـ 3 ثانية</string>
+
+    <string name="history_search_hint">بحث في السجلات...</string>
+    <string name="history_stat_failed">الفاشلة</string>
+    <string name="history_stat_success">الناجحة</string>
+    <string name="history_stat_total">إجمالي السجلات</string>
+    <string name="history_stat_last">آخر عملية</string>
+    <string name="history_no_sessions">لا توجد سجلات بعد</string>
+    <string name="history_sessions_appear_here">ستظهر هنا جميع جلسات الفحص المكتملة</string>
+    <string name="history_status_running">جارٍ</string>
+    <string name="history_status_completed">مكتملة</string>
+    <string name="history_filter_all">الكل</string>
+    <string name="history_today">اليوم</string>
+    <string name="history_detail_title">تفاصيل الجلسة #%1$d</string>
+    <string name="history_detail_router_sub">فحص الراوتر: %1$s</string>
+    <string name="history_detail_default_sub">نتائج الفحص</string>
+
+    <string name="router_empty_title">لا توجد أجهزة راوتر مضافة</string>
+    <string name="router_empty_sub">قم بإضافة ملف تعريف لبوابة الراوتر للبدء في الفحص</string>
+    <string name="router_btn_add">إضافة راوتر جديد</string>
+    <string name="router_default_badge">افتراضي</string>
+    <string name="router_btn_set_default">تعيين كافتراضي</string>
+    <string name="router_btn_delete">حذف</string>
+    <string name="router_btn_edit">تعديل</string>
+    <string name="router_delete_confirm_msg">هل أنت متأكد من رغبتك في حذف \'%1$s\' نهائياً من النظام؟ لا يمكن التراجع عن هذه العملية.</string>
+    <string name="router_delete_confirm_pos">حذف نهائي</string>
+    <string name="router_form_conn_section">معلومات الاتصال الأساسية</string>
+    <string name="router_form_name_label">اسم الراوتر</string>
+    <string name="router_form_name_placeholder">مثال: ميكروتك هوت سبوت</string>
+    <string name="router_form_ip_label">عنوان IP أو النطاق</string>
+    <string name="router_form_proto_label">بروتوكول الاتصال</string>
+    <string name="router_form_path_label">مسار صفحة الدخول (Path)</string>
+    <string name="router_form_selectors_section">محددات حقول صفحة الدخول</string>
+    <string name="router_form_user_sel_label">محدد حقل اسم المستخدم</string>
+    <string name="router_form_pass_sel_label">محدد حقل كلمة المرور</string>
+    <string name="router_form_login_btn_label">محدد زر تسجيل الدخول</string>
+    <string name="router_form_logout_btn_label">محدد زر تسجيل الخروج</string>
+    <string name="router_form_indicators_section">مؤشرات النجاح والفشل</string>
+    <string name="router_form_succ_ind_label">مؤشر نجاح الدخول (Success Indicator)</string>
+    <string name="router_form_fail_ind_label">مؤشر فشل الدخول (Failure Indicator)</string>
+    <string name="router_form_static_section">بيانات ثابتة (اختياري)</string>
+    <string name="router_form_static_user_label">اسم مستخدم ثابت (إن وجد)</string>
+    <string name="router_form_static_user_placeholder">اتركه فارغاً إذا كان اسم المستخدم هو كود الكرت</string>
+    <string name="router_form_btn_save">حفظ التعديلات</string>
+    <string name="router_form_btn_add_action">إضافة الراوتر</string>
+
+    <string name="menu_home_sub">الصفحة الرئيسية للتطبيق</string>
+    <string name="menu_test_sub">فحص بطاقات الهوت سبوت</string>
+    <string name="menu_history_sub">عرض نتائج الفحص السابقة</string>
+    <string name="menu_routers_sub">إضافة وإدارة الراوترات</string>
+    <string name="menu_settings_sub">تخصيص الخيارات والمظهر</string>
+
+    <string name="session_export_results">تصدير النتائج</string>
+    <string name="session_view_results">عرض النتائج</string>
+    <string name="session_filter_success">الناجحة فقط</string>
+    <string name="session_filter_failure">الفاشلة فقط</string>
+    <string name="session_search_hint">البحث في نتائج هذه الجلسة...</string>
+    <string name="session_no_results">لا توجد نتائج بعد</string>
+    <string name="session_results_appear_here">ستظهر هنا جميع بطاقات الهوت سبوت التي تم فحصها في هذه الجلسة بشكل تفصيلي.</string>
+    <string name="session_info_title">معلومات</string>
+    <string name="session_bottom_info_tip">يمكنك تصفية النتائج من الأعلى، والبحث داخل هذه الجلسة، وتصدير النتائج إلى ملف للحفظ.</string>
+
+    <string name="security_system_title">نظام الأمان والتحقق</string>
+    <string name="security_system_subtitle">أدخل كلمة المرور الرئيسية لفتح لوحة التحكم</string>
+    <string name="security_password_hint">كلمة المرور...</string>
+    <string name="security_confirm_btn">تأكيد الدخول</string>
+
+    <string name="locked_screen_title">تم قفل التطبيق</string>
+    <string name="locked_screen_desc">تم تجاوز الحد الأقصى للمحاولات الخاطئة (3 محاولات).\nتم قفل الوصول لحماية البيانات.</string>
+    <string name="locked_screen_close">إغلاق التطبيق</string>
+
+
+
+
+
+
+</resources>

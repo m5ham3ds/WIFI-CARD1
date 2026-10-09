@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config xmlns:tools="http://schemas.android.com/tools">
+    <!--
+      Security Configuration:
+      Local router captive portals and administration pages frequently require HTTP cleartext
+      communication over local RFC 1918 subnets (raw IP addresses such as 192.168.x.x and 10.x.x.x
+      which cannot be expressed in domain-config elements).
+      System trust anchors are strictly enforced for all TLS communication.
+    -->
+    <base-config cleartextTrafficPermitted="true" tools:ignore="InsecureBaseConfiguration">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Explicit cleartext allowances for common router management DNS hostnames -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">routerlogin.net</domain>
+        <domain includeSubdomains="true">routerlogin.com</domain>
+        <domain includeSubdomains="true">tplinkwifi.net</domain>
+        <domain includeSubdomains="true">tplinkrepeater.net</domain>
+        <domain includeSubdomains="true">router.asus.com</domain>
+        <domain includeSubdomains="true">tendawifi.com</domain>
+        <domain includeSubdomains="true">fritz.box</domain>
+        <domain includeSubdomains="true">my.router</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">wifi.sd.net</domain>
+        <domain includeSubdomains="true">abasha.com</domain>
+        <domain includeSubdomains="true">bello.com</domain>
+        <domain includeSubdomains="true">r.com</domain>
+    </domain-config>
+</network-security-config>

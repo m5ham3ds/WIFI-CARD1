@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Centralized Result Semantic Theme Color Attributes -->
+    <attr name="colorSuccessNormal" format="color" />
+    <attr name="colorSuccessTwoDevices" format="color" />
+    <attr name="colorFailure" format="color" />
+    <attr name="colorWarning" format="color" />
+    <attr name="colorNetworkError" format="color" />
+    <attr name="colorEngineError" format="color" />
+</resources>

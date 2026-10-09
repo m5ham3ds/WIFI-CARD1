@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors (Vibrant Neon Red & Obsidian Black from Screenshots) -->
+    <color name="wifi_purple_primary">#FFFF1E27</color>     <!-- Vibrant Neon Red Primary -->
+    <color name="wifi_purple_light">#FFFF5252</color>       <!-- Light Coral/Red for titles & accents in dark theme -->
+    <color name="wifi_purple_dark">#FFB71C1C</color>        <!-- Dark Crimson container -->
+    <color name="wifi_purple_container">#FF2A0D15</color>  <!-- Pill-highlight dark crimson container for active items -->
+    <color name="wifi_purple_transparent">#33FF1E27</color>  <!-- Glowing neon red transparent highlight -->
+
+    <!-- Dynamic Primary Theme 1: RED (Default on First Install) -->
+    <color name="theme_red_primary">#FFFF1E27</color>
+    <color name="theme_red_primary_container">#FF2A0D15</color>
+    <color name="theme_red_primary_container_dark">#FF1A070D</color>
+    <color name="theme_red_dark">#FFB71C1C</color>
+    <color name="theme_red_transparent">#33FF1E27</color>
+
+    <!-- Dynamic Primary Theme 2: BLUE -->
+    <color name="theme_blue_primary">#FF1976D2</color>
+    <color name="theme_blue_primary_container">#FFE3F2FD</color>
+    <color name="theme_blue_primary_container_dark">#FF102A45</color>
+    <color name="theme_blue_dark">#FF0D47A1</color>
+    <color name="theme_blue_transparent">#201976D2</color>
+
+    <!-- Dynamic Primary Theme 3: PURPLE -->
+    <color name="theme_purple_primary">#FF5E35B1</color>
+    <color name="theme_purple_primary_container">#FFEDE7F6</color>
+    <color name="theme_purple_primary_container_dark">#FF2E1B4E</color>
+    <color name="theme_purple_dark">#FF311B92</color>
+    <color name="theme_purple_transparent">#205E35B1</color>
+
+    <!-- Dynamic Primary Theme 4: YELLOW -->
+    <color name="theme_yellow_primary">#FFFBC02D</color>
+    <color name="theme_yellow_primary_container">#FFFFF9C4</color>
+    <color name="theme_yellow_primary_container_dark">#FF4D3E10</color>
+    <color name="theme_yellow_dark">#FFF57F17</color>
+    <color name="theme_yellow_transparent">#20FBC02D</color>
+
+    <!-- Dynamic Primary Theme 5: GREEN -->
+    <color name="theme_green_primary">#FF2E7D32</color>
+    <color name="theme_green_primary_container">#FFE8F5E9</color>
+    <color name="theme_green_primary_container_dark">#FF143818</color>
+    <color name="theme_green_dark">#FF1B5E20</color>
+    <color name="theme_green_transparent">#202E7D32</color>
+    
+    <!-- Status / Alert Colors -->
+    <color name="success_green">#FF4CAF50</color>           <!-- Success (Spring Green / Emerald-500) -->
+    <color name="success_green_light">#FF81C784</color>     <!-- Light Success for dark theme -->
+    <color name="success_green_badge">#FF2E7D32</color>     <!-- Safe Dark Green for indicator card metrics -->
+    
+    <color name="warning_orange">#FFFF9800</color>          <!-- Warning / Running (Orange-500) -->
+    <color name="warning_orange_dark">#FFEF6C00</color>     <!-- Deep Orange for warnings -->
+    
+    <color name="error_red">#FFE53935</color>               <!-- Error State / Stop / Cancel (Red-600) -->
+    <color name="error_red_light">#FFFF8A80</color>         <!-- Light Red accent -->
+    <color name="error_red_dark">#FFC62828</color>          <!-- Crimson for fail labels or panels -->
+
+    <!-- Base / Neutral motif - Deep Obsidian Black & Dark Slate from screenshots -->
+    <color name="neutral_background">#FF07090E</color>     <!-- Unified Deep Obsidian Background -->
+    <color name="neutral_surface">#FF0D111A</color>        <!-- Dark Tech Slate Card Surface -->
+    <color name="neutral_border">#FF1E2538</color>         <!-- Clean Slate Border Outline -->
+    <color name="neutral_border_light">#FF2A344D</color>   <!-- High-contrast border outline -->
+
+    <!-- Light Theme Neutrals -->
+    <color name="light_background">#FFF8F9FA</color>       <!-- Light grey background -->
+    <color name="light_surface">#FFFFFFFF</color>          <!-- Pure white surface and cards -->
+    <color name="light_surface_variant">#FFF1F3F5</color>  <!-- Light-accent grey grey -->
+    <color name="light_text_primary">#FF212529</color>    <!-- Dark charcoal main text -->
+    <color name="light_text_secondary">#FF6C757D</color>  <!-- Medium grey secondary text -->
+    <color name="light_border">#FFE9ECEF</color>           <!-- Soft border line -->
+    <color name="light_purple_transparent">#195E35B1</color> <!-- 10% opacity violet for selected tabs in light mode -->
+
+    <color name="text_primary">#FFFFFFFF</color>            <!-- Primary High-emphasis text -->
+    <color name="text_secondary">#FF9C97B2</color>          <!-- Secondary Lavender text for details/subtitles -->
+
+    <!-- Pure shades -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Semantic Result Tokens - Light Palette -->
+    <color name="result_success_normal_light">#FF2E7D32</color>      <!-- Emerald Green 800 -->
+    <color name="result_success_two_devices_light">#FFE65100</color>  <!-- Deep Amber / Warm Orange 900 -->
+    <color name="result_failure_light">#FFD32F2F</color>              <!-- Red 700 -->
+    <color name="result_warning_light">#FFF57F17</color>              <!-- Yellow / Amber 900 -->
+    <color name="result_network_error_light">#FF0288D1</color>        <!-- Cerulean Blue 700 -->
+    <color name="result_engine_error_light">#FFC2185B</color>         <!-- Deep Berry / Magenta 700 -->
+
+    <!-- Semantic Result Tokens - Dark Palette -->
+    <color name="result_success_normal_dark">#FF81C784</color>       <!-- Light Emerald Green 300 -->
+    <color name="result_success_two_devices_dark">#FFFFB74D</color>   <!-- Vibrant Amber / Orange 300 -->
+    <color name="result_failure_dark">#FFEF5350</color>               <!-- Red 400 -->
+    <color name="result_warning_dark">#FFFFEE58</color>               <!-- Yellow 300 -->
+    <color name="result_network_error_dark">#FF4FC3F7</color>         <!-- Sky Blue 300 -->
+    <color name="result_engine_error_dark">#FFF06292</color>          <!-- Rose / Pink 300 -->
+</resources>

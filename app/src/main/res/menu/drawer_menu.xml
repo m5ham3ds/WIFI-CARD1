@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home_fragment"
+            android:icon="@drawable/ic_nav_home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_test_fragment"
+            android:icon="@drawable/ic_nav_test"
+            android:title="@string/menu_test" />
+        <item
+            android:id="@+id/nav_history_fragment"
+            android:icon="@drawable/ic_nav_history"
+            android:title="@string/menu_history" />
+        <item
+            android:id="@+id/nav_router_manager_fragment"
+            android:icon="@drawable/ic_nav_router"
+            android:title="@string/menu_router_manager" />
+        <item
+            android:id="@+id/nav_settings_fragment"
+            android:icon="@drawable/ic_nav_settings"
+            android:title="@string/menu_settings" />
+    </group>
+
+    <item android:title="@string/menu_additional_options">
+        <menu>
+            <item
+                android:id="@+id/action_about"
+                android:icon="@drawable/ic_nav_about"
+                android:title="@string/menu_about" />
+            <item
+                android:id="@+id/action_exit"
+                android:icon="@drawable/ic_nav_exit"
+                android:title="@string/menu_exit" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,8 @@
+{
+  "name": "WIFI-CARD",
+  "description": "Imported from GitHub: m5ham3ds/WIFI-CARD0",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

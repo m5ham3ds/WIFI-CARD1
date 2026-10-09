@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="theme_entries">
+        <item>الوضع الفاتح</item>
+        <item>الوضع الداكن</item>
+        <item>الوضع الافتراضي للنظام</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
+    <string-array name="language_entries">
+        <item>العربية</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>ar</item>
+        <item>en</item>
+    </string-array>
+    <string-array name="delay_entries">
+        <item>1 ثانية (سريع جداً)</item>
+        <item>1.5 ثانية (سريع)</item>
+        <item>2 ثانية (الافتراضي للتحميل)</item>
+        <item>2.5 ثانية</item>
+        <item>3 ثانية (الافتراضي للنتيجة)</item>
+        <item>4 ثواني (بطيء)</item>
+        <item>5 ثواني (بطيء جداً)</item>
+    </string-array>
+    <string-array name="delay_values">
+        <item>1000</item>
+        <item>1500</item>
+        <item>2000</item>
+        <item>2500</item>
+        <item>3000</item>
+        <item>4000</item>
+        <item>5000</item>
+    </string-array>
+    <string-array name="screenshot_delay_entries">
+        <item>0.5 ثانية (فيديو سلس)</item>
+        <item>1 ثانية (سريع)</item>
+        <item>2 ثانية (الافتراضي)</item>
+        <item>3 ثواني (بطيء)</item>
+        <item>5 ثواني (بطيء جداً)</item>
+    </string-array>
+    <string-array name="screenshot_delay_values">
+        <item>500</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>5000</item>
+    </string-array>
+    <string-array name="preload_pages_entries">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>65</item>
+        <item>70</item>
+        <item>75</item>
+        <item>80</item>
+        <item>85</item>
+        <item>90</item>
+        <item>95</item>
+        <item>100</item>
+    </string-array>
+    <string-array name="preload_pages_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>65</item>
+        <item>70</item>
+        <item>75</item>
+        <item>80</item>
+        <item>85</item>
+        <item>90</item>
+        <item>95</item>
+        <item>100</item>
+    </string-array>
+    <string-array name="success_action_entries">
+        <item>التوقف التام وحفظ الحالة</item>
+        <item>إرسال إشعار والمتابعة</item>
+        <item>تخطي ومتابعة</item>
+    </string-array>
+    <string-array name="success_action_values">
+        <item>stop</item>
+        <item>notify_continue</item>
+        <item>skip</item>
+    </string-array>
+</resources>
