@@ -166,9 +166,13 @@ class TestService : Service(), KoinComponent {
                     super.onPageFinished(view, url)
                     Timber.d("WebView page loaded: $url")
                     
-                    // Auto-click reload button if present on page load
+                    // Auto-click reload button ONLY if present on genuine browser network error pages
                     val autoReloadJs = """
                         (function() {
+                            var isNetErr = (document.title || '').toLowerCase().indexOf('webpage not available') !== -1 ||
+                                           document.getElementById('main-frame-error') !== null ||
+                                           document.querySelector('.neterror') !== null;
+                            if (!isNetErr) return false;
                             var buttons = document.querySelectorAll('button, a, input[type="button"]');
                             for (var i = 0; i < buttons.length; i++) {
                                 var text = (buttons[i].innerText || buttons[i].value || '').toLowerCase();
@@ -182,7 +186,7 @@ class TestService : Service(), KoinComponent {
                     """.trimIndent()
                     view?.evaluateJavascript(autoReloadJs) { result ->
                         if (result == "true") {
-                            Timber.d("Auto-clicked reload button")
+                            Timber.d("Auto-clicked reload button on network error page")
                         }
                     }
 
@@ -794,10 +798,13 @@ class TestService : Service(), KoinComponent {
                                     throw IllegalStateException("Interrupted by success")
                                 }
                                 
-                                // Check for reload buttons immediately on loaded DOM
+                                // Check for reload buttons ONLY on genuine network error pages
                                 val checkReloadJs = """
                                     (function() {
                                         if (document.readyState !== 'complete' && document.readyState !== 'interactive') return 'not_ready';
+                                        var isNetErr = (document.title || '').toLowerCase().indexOf('webpage not available') !== -1 ||
+                                                       document.getElementById('main-frame-error') !== null;
+                                        if (!isNetErr) return 'ok';
                                         var buttons = document.querySelectorAll('button, a, input[type="button"]');
                                         for (var i = 0; i < buttons.length; i++) {
                                             var text = (buttons[i].innerText || buttons[i].value || '').toLowerCase();
@@ -811,7 +818,7 @@ class TestService : Service(), KoinComponent {
                                 """.trimIndent()
                                 val reloadStatus = evaluateJsSafely(webView, checkReloadJs)
                                 if (reloadStatus == "clicked_reload") {
-                                    Timber.d("Clicked reload button during test loop, waiting for reload...")
+                                    Timber.d("Clicked reload button during test loop on error page, waiting for reload...")
                                     delay(300L)
                                     ensureFreshLoginPageWithRecovery(webView, router, strategy)
                                 }

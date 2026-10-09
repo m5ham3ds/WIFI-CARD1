@@ -389,4 +389,141 @@ class HotspotStrategyTest {
         assertTrue(profilePasswordEnabled.passwordEnabled)
         assertEquals("Effective password must be decrypted when passwordEnabled is true", rawPassword, profilePasswordEnabled.getEffectivePassword())
     }
+
+    // ==========================================
+    // MOTASEM TARGETED REPAIR VERIFICATION TESTS
+    // ==========================================
+
+    private val motasemAuthenticRedirectPageHtml = """
+        <!DOCTYPE html><html><head>
+        <title>شبكة معتصم نت - جارِ التحويل</title>
+        <meta http-equiv="refresh" content="4;url=status.html">
+        </head><body>
+        <div class="box">
+            <h3>سيتم الآن تحويلك الى الموقع المطلوب</h3>
+            <p>يرجى الانتظار، جاري نقلك تلقائياً إلى صفحة الحالة...</p>
+        </div>
+        </body></html>
+    """.trimIndent()
+
+    private val motasemAuthenticStatusPageHtml = """
+        <!DOCTYPE html><html><head>
+        <title>شبكة معتصم نت</title>
+        <script>
+            function openLogout() {
+                open('http://wifi.sd.net/logout', 'hotspot_logout', 'toolbar=0,location=0,status=0,menubar=0');
+                return false;
+            }
+        </script>
+        </head><body>
+        <div class="box">
+            <form action="http://wifi.sd.net/logout" name="logout" onsubmit="return openLogout()">
+                <div class="header"><h4>تفاصيل الأستخدام</h4></div>
+                <div class="section username"><h4>أسم المستخدم:</h4><h4>904123</h4></div>
+                <div class="section card">
+                    <h4>الوقت المتبقي:</h4>
+                    <h4 id="timeLeft">5 يوم , 9 ساعة , 43 دقيقة</h4>
+                </div>
+                <div class="section remain">
+                    <h4>الرصيد المتبقي:</h4>
+                    <h4>3.64 جيجابايت</h4>
+                </div>
+                <div class="submit"><button type="submit">تسجيل الخروج</button></div>
+            </form>
+        </div>
+        </body></html>
+    """.trimIndent()
+
+    @Test
+    fun testMotasemRedirectPageGroundedDetection() {
+        val router = RouterProfileEntity(
+            name = "شبكة معتصم نت",
+            ip = "wifi.sd.net",
+            strategyId = "motasem",
+            successIndicator = "تفاصيل الأستخدام",
+            failureIndicator = "خطأ"
+        )
+
+        // 1. Redirect page must be detected as redirecting
+        assertTrue(
+            "Redirect page must be detected by ResultChecker.isRedirecting",
+            ResultChecker.isRedirecting(motasemAuthenticRedirectPageHtml, "سيتم الآن تحويلك الى الموقع المطلوب")
+        )
+
+        // 2. Redirect page must NOT be evaluated as success yet
+        assertFalse(
+            "Redirect page must NOT be evaluated as success before reaching status page",
+            ResultChecker.isSuccess(motasemAuthenticRedirectPageHtml, "سيتم الآن تحويلك الى الموقع المطلوب", router)
+        )
+
+        // 3. Redirect page must NOT be evaluated as failure
+        assertFalse(
+            "Redirect page must NOT be classified as card failure",
+            ResultChecker.isFailure(motasemAuthenticRedirectPageHtml, "سيتم الآن تحويلك الى الموقع المطلوب", router)
+        )
+
+        // 4. Outcome of an uncompleted redirect is TIMEOUT (technical error), never a card failure
+        val outcome = ResultChecker.classifyOutcome(motasemAuthenticRedirectPageHtml, "سيتم الآن تحويلك الى الموقع المطلوب", router, 4000L)
+        assertEquals(com.example.domain.model.ResultCategory.TIMEOUT, outcome.category)
+        assertFalse("Timeout must NOT be counted as success", outcome.isSuccess)
+    }
+
+    @Test
+    fun testMotasemAuthoritativeStatusDomDetection() {
+        val router = RouterProfileEntity(
+            name = "شبكة معتصم نت",
+            ip = "wifi.sd.net",
+            strategyId = "motasem",
+            successIndicator = "تفاصيل الأستخدام",
+            failureIndicator = "خطأ"
+        )
+
+        // Status page must be evaluated as success
+        assertTrue(
+            "Motasem status page with #timeLeft and .section.username must be success",
+            ResultChecker.isSuccess(motasemAuthenticStatusPageHtml, "تفاصيل الأستخدام أسم المستخدم 904123 الوقت المتبقي 5 يوم", router)
+        )
+        assertTrue(ResultChecker.isLoggedIn(motasemAuthenticStatusPageHtml, "تفاصيل الأستخدام", router))
+        assertFalse(ResultChecker.isFailure(motasemAuthenticStatusPageHtml, "تفاصيل الأستخدام", router))
+        assertFalse(ResultChecker.isRedirecting(motasemAuthenticStatusPageHtml, "تفاصيل الأستخدام"))
+
+        val outcome = ResultChecker.classifyOutcome(motasemAuthenticStatusPageHtml, "تفاصيل الأستخدام أسم المستخدم 904123", router, 500L)
+        assertTrue(outcome.isSuccess)
+        assertEquals(com.example.domain.model.ResultCategory.SUCCESS, outcome.category)
+        assertEquals(com.example.domain.model.ResultSubReason.NORMAL_LOGIN_SUCCESS, outcome.subReason)
+    }
+
+    @Test
+    fun testMotasemTwoDevicesPrecedenceOverFailure() {
+        val router = RouterProfileEntity(
+            name = "شبكة معتصم نت",
+            ip = "wifi.sd.net",
+            strategyId = "motasem"
+        )
+        val twoDevicesPage = "<html><body><div class='alert'>لا يمكن استعمال البطاقة في جهازين</div></body></html>"
+        val bodyText = "لا يمكن استعمال البطاقة في جهازين"
+
+        assertTrue(ResultChecker.isTwoDevicesSuccess(twoDevicesPage, bodyText))
+        assertTrue(ResultChecker.isSuccess(twoDevicesPage, bodyText, router))
+        assertFalse(ResultChecker.isFailure(twoDevicesPage, bodyText, router))
+
+        val outcome = ResultChecker.classifyOutcome(twoDevicesPage, bodyText, router, 350L)
+        assertTrue(outcome.isSuccess)
+        assertTrue(outcome.isTwoDevicesSuccess)
+        assertEquals(com.example.domain.model.ResultCategory.SUCCESS, outcome.category)
+        assertEquals(com.example.domain.model.ResultSubReason.TWO_DEVICES_SUCCESS, outcome.subReason)
+        assertEquals("TWO_DEVICES_ACTIVE_CARD", outcome.successReason)
+    }
+
+    @Test
+    fun testMotasemCardWhitespaceNormalization() {
+        val rawWithWhitespace = "   90412345   \t\n"
+        val normalized = rawWithWhitespace.trim()
+        assertEquals("90412345", normalized)
+
+        // JSON quoting safety
+        val quoted = com.example.service.InjectionManager.quote(normalized)
+        assertEquals("\"90412345\"", quoted)
+    }
 }
+

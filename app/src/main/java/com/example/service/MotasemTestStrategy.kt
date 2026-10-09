@@ -6,16 +6,30 @@ import com.example.data.local.entity.RouterProfileEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import timber.log.Timber
 
 /**
  * Test Strategy for Motasem Net captive portals (شبكة معتصم نت).
- * Matches portals with http://r.com/login and status pages with section username/remain and #timeLeft.
+ *
+ * Implements the authentic Motasem captive portal contracts:
+ * 1. Login page: Form 'login' posting to http://wifi.sd.net/login, visible username input,
+ *    password input (width 0), hidden 'sendin' form, and portal's CHAP authentication function
+ *    'doLogin()' utilizing 'hexMD5(\'\264\' + password + challenge)'.
+ * 2. Intermediate redirect page: Displays "سيتم الآن تحويلك الى الموقع المطلوب" and refreshes/navigates
+ *    to 'status.html' after approximately 4,000 ms.
+ * 3. Status page: Authenticated session indicators including '#timeLeft', '.section.username',
+ *    usage details ("تفاصيل الأستخدام"), and confirmed logout form targeting http://wifi.sd.net/logout.
+ * 4. Two Devices Notification: Explicit "لا يمكن استعمال البطاقة في جهازين" alert/DOM message
+ *    indicating a valid, active card being used on another client.
  */
 object MotasemTestStrategy : RouterTestStrategy {
     override val strategyName: String = "Motasem"
 
+    /**
+     * Verifies that the current WebView DOM is on a fresh, ready-to-authenticate Motasem login page.
+     * Rejects logout/status pages, intermediate redirect pages, and ensures both login DOM inputs
+     * and the portal's CHAP hashing scripts (doLogin and hexMD5) are present.
+     */
     override suspend fun verifyFreshLoginPage(
         router: RouterProfileEntity,
         webView: WebView?,
@@ -23,17 +37,41 @@ object MotasemTestStrategy : RouterTestStrategy {
     ): Boolean {
         val checkJs = """
         (function() {
+            if (document.readyState !== 'complete' && document.readyState !== 'interactive') return 'not_ready';
             var html = (document.documentElement.innerHTML || '').toLowerCase();
-            var title = (document.title || '').toLowerCase();
             var bodyText = (document.body.innerText || '').toLowerCase();
-            if (document.getElementById('timeLeft') || html.indexOf('r.com/logout') !== -1 || bodyText.indexOf('تفاصيل الأستخدام') !== -1) {
+
+            // 1. If currently on status or logout page, it is not a fresh login page
+            if (document.getElementById('timeLeft') !== null ||
+                html.indexOf('wifi.sd.net/logout') !== -1 ||
+                html.indexOf('r.com/logout') !== -1 ||
+                (html.indexOf('logout') !== -1 && (html.indexOf('status') !== -1 || bodyText.indexOf('تفاصيل الأستخدام') !== -1)) ||
+                bodyText.indexOf('تفاصيل الأستخدام') !== -1 ||
+                bodyText.indexOf('تفاصيل الاستخدام') !== -1) {
                 return 'on_logout_page';
             }
-            var u = document.querySelector('#username') || 
-                    document.querySelector('form[name="login"] input[name="username"]') || 
-                    document.querySelector('input[name="username"]') || 
+
+            // 2. If currently on intermediate redirect page, not ready yet
+            if (bodyText.indexOf('سيتم الآن تحويلك') !== -1 ||
+                bodyText.indexOf('سيتم الان تحويلك') !== -1 ||
+                html.indexOf('تحويلك الى الموقع المطلوب') !== -1 ||
+                (html.indexOf('status.html') !== -1 && html.indexOf('refresh') !== -1)) {
+                return 'redirecting';
+            }
+
+            // 3. Verify presence of login username input
+            var u = document.querySelector('#username') ||
+                    document.querySelector('form[name="login"] input[name="username"]') ||
+                    document.querySelector('input[name="username"]') ||
                     (document.login && document.login.username);
-            return u ? 'ready' : 'not_ready';
+            if (!u) return 'not_ready';
+
+            // 4. Verify presence of required CHAP authentication scripts
+            if (typeof doLogin !== 'function' || typeof hexMD5 !== 'function') {
+                return 'not_ready';
+            }
+
+            return 'ready';
         })();
         """.trimIndent()
         val res = evaluateJsSafely(checkJs)
@@ -115,7 +153,7 @@ object MotasemTestStrategy : RouterTestStrategy {
 
                 if (isBlockedBySuccess()) return@withContext CardTestOutcome.failure("مقاطعة بنجاح بطاقة أخرى")
 
-                // Pre-flight check: Detects active Motasem Net session
+                // Pre-flight check: Detect active Motasem Net session
                 val preFlightJs = """
                 (function() {
                     var html = document.documentElement.innerHTML.toLowerCase();
@@ -123,7 +161,7 @@ object MotasemTestStrategy : RouterTestStrategy {
                     var title = document.title.toLowerCase();
 
                     if (title.indexOf('شبكة معتصم نت') !== -1 && (bodyText.indexOf('تفاصيل الأستخدام') !== -1 || document.getElementById('timeLeft'))) return 'logged_in';
-                    if (html.indexOf('r.com/logout') !== -1 || document.querySelector('form[action*="logout"]')) return 'logged_in';
+                    if (html.indexOf('wifi.sd.net/logout') !== -1 || html.indexOf('r.com/logout') !== -1 || document.querySelector('form[action*="logout"]')) return 'logged_in';
                     if (bodyText.indexOf('تفاصيل الأستخدام') !== -1 || bodyText.indexOf('الوقت المتبقي') !== -1 || bodyText.indexOf('الرصيد المتبقي') !== -1) return 'logged_in';
                     if (document.querySelector('.section.username, .section.remain')) return 'logged_in';
 
@@ -151,14 +189,14 @@ object MotasemTestStrategy : RouterTestStrategy {
                         """.trimIndent()
                         evaluateJsSafely(forceLogoutJs)
 
-                        delay(1500)
+                        delay(1500L)
                         if (isBlockedBySuccess()) return@withContext CardTestOutcome.failure("مقاطعة بنجاح بطاقة أخرى")
                         wv.loadUrl(url)
-                        delay(1000)
+                        delay(1000L)
                     }
                 }
 
-                // Wait for login form to be ready
+                // Wait for login form and required CHAP functions to be fully ready
                 val checkReadyJs = """
                 (function() {
                     if (document.readyState !== 'complete' && document.readyState !== 'interactive') return 'not_ready';
@@ -166,7 +204,9 @@ object MotasemTestStrategy : RouterTestStrategy {
                             document.querySelector('form[name="login"] input[name="username"]') || 
                             document.querySelector('input[name="username"]') || 
                             (document.login && document.login.username);
-                    return u ? 'ready' : 'not_ready';
+                    if (!u) return 'not_ready';
+                    if (typeof doLogin !== 'function' || typeof hexMD5 !== 'function') return 'not_ready';
+                    return 'ready';
                 })();
                 """.trimIndent()
 
@@ -181,85 +221,69 @@ object MotasemTestStrategy : RouterTestStrategy {
 
                 if (isBlockedBySuccess()) return@withContext CardTestOutcome.failure("مقاطعة بنجاح بطاقة أخرى")
 
-                val safeCard = JSONObject.quote(card).removeSurrounding("\"").replace("'", "\\'")
-                val safePassword = if (router.passwordEnabled) JSONObject.quote(router.getEffectivePassword()).removeSurrounding("\"").replace("'", "\\'") else ""
+                // Card Normalization: Trim surrounding whitespace without changing valid internal characters
+                val normalizedCard = card.trim()
+                val safeCardJson = InjectionManager.quote(normalizedCard)
+                val effectivePassword = if (router.passwordEnabled) router.getEffectivePassword() else ""
+                val safePasswordJson = InjectionManager.quote(effectivePassword)
 
+                // Motasem CHAP Login Contract:
+                // Strictly fills document.login and invokes the portal's original doLogin() function.
+                // NEVER falls back to submitting raw/un-hashed credentials through hidden sendin form,
+                // and NEVER bypasses onsubmit by calling form.submit() directly.
                 val injectionJs = """
                 (function() {
                     try {
                         function triggerEvents(el) {
-                            if(!el) return;
+                            if (!el) return;
                             try {
                                 var ev1 = document.createEvent('Event'); ev1.initEvent('input', true, true); el.dispatchEvent(ev1);
                                 var ev2 = document.createEvent('Event'); ev2.initEvent('change', true, true); el.dispatchEvent(ev2);
                             } catch(e) {}
                         }
 
-                        var cardValue = '$safeCard';
-                        var passwordValue = '$safePassword';
+                        var cardVal = $safeCardJson;
+                        var pwdVal = $safePasswordJson;
 
-                        // 1. Fill visible username input
-                        if (document.login && document.login.username) {
-                            document.login.username.value = cardValue;
-                            triggerEvents(document.login.username);
-                        } else {
-                            var u = document.querySelector('form[name="login"] input[name="username"]') || 
-                                    document.querySelector('#username') || 
-                                    document.querySelector('input[name="username"]:not([type="hidden"])');
-                            if (u) {
-                                u.value = cardValue;
-                                triggerEvents(u);
-                            }
+                        // 1. Verify required CHAP functions
+                        if (typeof doLogin !== 'function') {
+                            return 'error: CHAP doLogin function is missing on portal page';
+                        }
+                        if (typeof hexMD5 !== 'function') {
+                            return 'error: CHAP hexMD5 hashing function is missing on portal page';
                         }
 
-                        // 2. Fill password input if needed
-                        if (document.login && document.login.password) {
-                            document.login.password.value = passwordValue;
-                            triggerEvents(document.login.password);
-                        } else {
-                            var pass = document.querySelector('form[name="login"] input[name="password"]') || 
-                                       document.querySelector('input[name="password"]');
-                            if (pass) {
-                                pass.value = passwordValue;
-                                triggerEvents(pass);
-                            }
+                        // 2. Set username on visible login form
+                        var uInput = (document.login && document.login.username) ||
+                                     document.querySelector('form[name="login"] input[name="username"]') ||
+                                     document.querySelector('#username') ||
+                                     document.querySelector('input[name="username"]:not([type="hidden"])');
+                        if (!uInput) {
+                            return 'error: Username input not found on portal page';
+                        }
+                        uInput.value = cardVal;
+                        triggerEvents(uInput);
+
+                        // 3. Set password on visible login form (empty string when password use is disabled)
+                        var pInput = (document.login && document.login.password) ||
+                                     document.querySelector('form[name="login"] input[name="password"]') ||
+                                     document.querySelector('input[type="password"]');
+                        if (pInput) {
+                            pInput.value = pwdVal;
+                            triggerEvents(pInput);
                         }
 
-                        // 3. Prefer portal's own doLogin() which hashes with Motasem CHAP salt
-                        if (typeof doLogin === 'function') {
-                            try {
-                                doLogin();
-                                return 'injected_dologin';
-                            } catch (err) {}
+                        // 4. Invoke portal's original doLogin() strictly
+                        // Never bypass CHAP or fall back to raw sendin submission
+                        try {
+                            doLogin();
+                            return 'injected_dologin';
+                        } catch(chapErr) {
+                            return 'error: doLogin execution threw: ' + (chapErr.message || chapErr);
                         }
-
-                        // 4. Set and submit hidden sendin form directly
-                        var sendinForm = document.querySelector('form[name="sendin"]');
-                        if (sendinForm) {
-                            var su = sendinForm.querySelector('input[name="username"]');
-                            if (su) su.value = cardValue;
-                            var sp = sendinForm.querySelector('input[name="password"]');
-                            if (sp) sp.value = passwordValue;
-                            sendinForm.submit();
-                            return 'injected_sendin_fallback';
-                        }
-
-                        // 5. Click submit button
-                        var submitBtn = document.querySelector('form[name="login"] button[type=submit], .submit button, form[name="login"] input[type=submit]');
-                        if (submitBtn) {
-                            submitBtn.click();
-                            return 'injected_click_processed';
-                        }
-
-                        // 6. Direct form submission fallback
-                        var form = document.querySelector('form[name="login"]');
-                        if (form) {
-                            form.submit();
-                            return 'injected_form_fallback';
-                        }
-
-                        return 'injected_no_submit_found';
-                    } catch(e) { return 'error: ' + e.message; }
+                    } catch(e) {
+                        return 'error: ' + (e.message || e);
+                    }
                 })();
                 """.trimIndent()
 
@@ -267,90 +291,202 @@ object MotasemTestStrategy : RouterTestStrategy {
                 val injectResult = evaluateJsSafely(injectionJs)
                 Timber.d("[Motasem] Injection result: $injectResult")
 
+                // If CHAP injection encountered a typed script error, return typed engine error immediately
+                if (injectResult.startsWith("error:")) {
+                    val duration = SystemClock.elapsedRealtime() - startTime
+                    Timber.e("[Motasem] Injection failed with typed error: $injectResult")
+                    return@withContext CardTestOutcome.engineError(
+                        message = "خطأ في دالة تشفير البوابة (CHAP): $injectResult",
+                        durationMs = duration,
+                        isJs = true
+                    )
+                }
+
+                // Result classification script implementing centralized precedence:
+                // 1. Explicit Two Devices Notification (DOM / alert) -> 'success_two_devices'
+                // 2. Authoritative Status DOM (#timeLeft, .section.username, usage details) -> 'status_success'
+                // 3. Confirmed Portal Failure / Rejection -> 'failure'
+                // 4. Authorizing Intermediate State -> 'authorizing'
+                // 5. Intermediate Redirect Page ("سيتم الآن تحويلك الى الموقع المطلوب", meta refresh 4s) -> 'redirecting'
+                // 6. Unrecognized / pending -> 'unknown'
                 val checkJs = """
                 (function() {
-                    var html = document.documentElement.innerHTML.toLowerCase();
-                    var bodyText = (document.body.innerText || '').toLowerCase();
-                    var title = document.title.toLowerCase();
+                    try {
+                        var html = (document.documentElement.innerHTML || '').toLowerCase();
+                        var bodyText = (document.body.innerText || '').toLowerCase();
+                        var title = (document.title || '').toLowerCase();
 
-                    // 0. Primary Success Condition: Specific "cannot use card on two devices" notification
-                    if (bodyText.indexOf('لا يمكن استعمال البطاقة في جهازين') !== -1 ||
-                        bodyText.indexOf('لا يمكن استخدام البطاقة في جهازين') !== -1 ||
-                        bodyText.indexOf('لا يمكن استعمال الكرت في جهازين') !== -1 ||
-                        bodyText.indexOf('لا يمكن استخدام الكرت في جهازين') !== -1 ||
-                        html.indexOf('لا يمكن استعمال البطاقة في جهازين') !== -1 ||
-                        html.indexOf('لا يمكن استخدام البطاقة في جهازين') !== -1 ||
-                        html.indexOf('لا يمكن استعمال الكرت في جهازين') !== -1 ||
-                        html.indexOf('لا يمكن استخدام الكرت في جهازين') !== -1 ||
-                        ((bodyText.indexOf('لا يمكن') !== -1 || html.indexOf('لا يمكن') !== -1) && 
-                         (bodyText.indexOf('جهازين') !== -1 || html.indexOf('جهازين') !== -1) && 
-                         (bodyText.indexOf('بطاق') !== -1 || bodyText.indexOf('كرت') !== -1 || html.indexOf('بطاق') !== -1 || html.indexOf('كرت') !== -1))) {
-                        return 'success_two_devices';
+                        // 1. Priority 1: Explicit Two Devices Notification
+                        if (bodyText.indexOf('لا يمكن استعمال البطاقة في جهازين') !== -1 ||
+                            bodyText.indexOf('لا يمكن استخدام البطاقة في جهازين') !== -1 ||
+                            bodyText.indexOf('لا يمكن استعمال الكرت في جهازين') !== -1 ||
+                            bodyText.indexOf('لا يمكن استخدام الكرت في جهازين') !== -1 ||
+                            html.indexOf('لا يمكن استعمال البطاقة في جهازين') !== -1 ||
+                            html.indexOf('لا يمكن استخدام البطاقة في جهازين') !== -1 ||
+                            html.indexOf('لا يمكن استعمال الكرت في جهازين') !== -1 ||
+                            html.indexOf('لا يمكن استخدام الكرت في جهازين') !== -1 ||
+                            ((bodyText.indexOf('لا يمكن') !== -1 || html.indexOf('لا يمكن') !== -1) && 
+                             (bodyText.indexOf('جهازين') !== -1 || html.indexOf('جهازين') !== -1) && 
+                             (bodyText.indexOf('بطاق') !== -1 || bodyText.indexOf('كرت') !== -1 || html.indexOf('بطاق') !== -1 || html.indexOf('كرت') !== -1))) {
+                            return 'success_two_devices';
+                        }
+
+                        // 2. Priority 2: Authoritative Motasem Status Page (Normal Login Success)
+                        var hasTimeLeft = document.getElementById('timeLeft') !== null;
+                        var hasUsernameSection = document.querySelector('.section.username') !== null;
+                        var hasUsageDetails = bodyText.indexOf('تفاصيل الأستخدام') !== -1 || bodyText.indexOf('تفاصيل الاستخدام') !== -1;
+                        var hasLogoutLink = html.indexOf('wifi.sd.net/logout') !== -1 || html.indexOf('r.com/logout') !== -1 || document.querySelector('form[action*="logout"]') !== null;
+
+                        if (hasTimeLeft && (hasUsernameSection || hasUsageDetails || hasLogoutLink)) {
+                            return 'status_success';
+                        }
+                        if (hasUsageDetails && (bodyText.indexOf('الوقت المتبقي') !== -1 || bodyText.indexOf('الرصيد المتبقي') !== -1)) {
+                            return 'status_success';
+                        }
+                        if (title.indexOf('شبكة معتصم نت') !== -1 && (hasTimeLeft || hasUsageDetails)) {
+                            return 'status_success';
+                        }
+                        if (document.querySelector('.section.remain') && html.indexOf('readablizebytes') !== -1) {
+                            return 'status_success';
+                        }
+
+                        // 3. Priority 3: Confirmed Portal Failure / Rejection
+                        var failureKeywords = ['خطأ', 'فشل', 'غير صحيح', 'invalid', 'not found', 'incorrect', 'expired', 'منتهي', 'نفذ الرصيد', 'رفض'];
+                        for (var i = 0; i < failureKeywords.length; i++) {
+                            if (bodyText.indexOf(failureKeywords[i]) !== -1 || html.indexOf(failureKeywords[i]) !== -1) {
+                                return 'failure';
+                            }
+                        }
+                        if ((bodyText.indexOf('لا يمكن') !== -1 || html.indexOf('لا يمكن') !== -1) && 
+                            bodyText.indexOf('جهازين') === -1 && html.indexOf('جهازين') === -1) {
+                            return 'failure';
+                        }
+
+                        // 4. Priority 4: Authorizing Intermediate State
+                        if (bodyText.indexOf('already authorizing') !== -1 || html.indexOf('already authorizing') !== -1 ||
+                            bodyText.indexOf('جاري التحقق') !== -1 || bodyText.indexOf('يرجى الانتظار') !== -1) {
+                            return 'authorizing';
+                        }
+
+                        // 5. Priority 5: Intermediate Redirect Page (4s delay navigating to status.html)
+                        if (bodyText.indexOf('سيتم الآن تحويلك') !== -1 || 
+                            bodyText.indexOf('سيتم الان تحويلك') !== -1 ||
+                            html.indexOf('سيتم الآن تحويلك') !== -1 ||
+                            html.indexOf('سيتم الان تحويلك') !== -1 ||
+                            html.indexOf('تحويلك الى الموقع المطلوب') !== -1 ||
+                            html.indexOf('تحويلك إلى الموقع المطلوب') !== -1 ||
+                            html.indexOf('content="4;url=status.html"') !== -1 ||
+                            (html.indexOf('status.html') !== -1 && html.indexOf('refresh') !== -1)) {
+                            return 'redirecting';
+                        }
+
+                        return 'unknown';
+                    } catch(e) {
+                        return 'error: ' + (e.message || e);
                     }
-
-                    // Motasem Net Status indicators
-                    if (document.getElementById('timeLeft') && document.querySelector('.section.username')) return 'success';
-                    if (bodyText.indexOf('تفاصيل الأستخدام') !== -1 && bodyText.indexOf('الوقت المتبقي') !== -1) return 'success';
-                    if (document.querySelector('.section.remain') && html.indexOf('readablizebytes') !== -1) return 'success';
-                    if (html.indexOf('r.com/logout') !== -1) return 'success';
-                    if (title.indexOf('شبكة معتصم نت') !== -1 && bodyText.indexOf('أسم المستخدم') !== -1) return 'success';
-
-                    // Authorizing state
-                    if (bodyText.indexOf('already authorizing') !== -1 || html.indexOf('already authorizing') !== -1) return 'authorizing';
-
-                    // Failure state
-                    if (bodyText.indexOf('خطأ') !== -1 || bodyText.indexOf('فشل') !== -1 || bodyText.indexOf('غير صحيح') !== -1 || bodyText.indexOf('invalid') !== -1 || bodyText.indexOf('not found') !== -1 || bodyText.indexOf('منتهي') !== -1 || bodyText.indexOf('نفذ الرصيد') !== -1 || bodyText.indexOf('incorrect') !== -1 || bodyText.indexOf('expired') !== -1 || (bodyText.indexOf('لا يمكن') !== -1 && bodyText.indexOf('جهازين') === -1)) return 'failure';
-
-                    return 'unknown';
                 })();
                 """.trimIndent()
 
-                val maxResultWaitMs = cardTestDelay.coerceAtLeast(500L)
-                val checkStartTime = SystemClock.elapsedRealtime()
-                var resultStr = "unknown"
+                // State-aware bounded timing formula:
+                // - Normal wait: baseWaitMs = cardTestDelay.coerceAtLeast(1000L) (default 3000ms from user preference)
+                // - If intermediate redirect page is detected: grant bounded redirect grace period of 7,000 ms
+                //   (sufficient for the observed 4-second delay + navigation + DOM rendering headroom).
+                // - Hard ceiling: maxAbsoluteDeadlineMs = 15,000 ms to guarantee termination under all circumstances.
+                val baseWaitMs = cardTestDelay.coerceAtLeast(1000L)
+                val redirectGraceMs = 7000L
+                val maxAbsoluteDeadlineMs = 15000L
 
-                delay(150L) // Initial short yield for form dispatch
+                val loopStartTime = SystemClock.elapsedRealtime()
+                var redirectDetectedAt: Long? = null
+                var finalState = "unknown"
 
-                while (SystemClock.elapsedRealtime() - checkStartTime < maxResultWaitMs) {
+                delay(150L) // Initial yield for form dispatch
+
+                while (true) {
                     if (isBlockedBySuccess()) return@withContext CardTestOutcome.failure("مقاطعة بنجاح بطاقة أخرى")
 
+                    val now = SystemClock.elapsedRealtime()
+                    val totalElapsed = now - loopStartTime
+
+                    // 1. Check synchronous captured alert
                     val alertText = capturedAlert()
                     if (ResultChecker.isTwoDevicesSuccess("", alertText)) {
-                        resultStr = "success_two_devices"
+                        finalState = "success_two_devices"
                         break
                     }
 
-                    resultStr = evaluateJsSafely(checkJs)
-                    if (resultStr == "success" || resultStr == "success_two_devices" || resultStr == "failure") {
-                        break
-                    }
-                    if (resultStr == "authorizing") {
-                        delay(1000L)
-                        resultStr = evaluateJsSafely(checkJs)
-                        if (resultStr == "authorizing") {
-                            if (onRequiresGlobalRelogin != null) {
-                                onRequiresGlobalRelogin()
+                    // 2. Evaluate DOM state
+                    val domState = evaluateJsSafely(checkJs)
+
+                    when (domState) {
+                        "success_two_devices" -> {
+                            finalState = "success_two_devices"
+                            break
+                        }
+                        "status_success" -> {
+                            finalState = "status_success"
+                            break
+                        }
+                        "failure" -> {
+                            finalState = "failure"
+                            break
+                        }
+                        "authorizing" -> {
+                            delay(1000L)
+                            val recheck = evaluateJsSafely(checkJs)
+                            if (recheck == "status_success" || recheck == "success_two_devices" || recheck == "failure") {
+                                finalState = recheck
+                                break
+                            }
+                            if (recheck == "authorizing") {
+                                onRequiresGlobalRelogin?.invoke()
+                                finalState = "authorizing"
+                                break
                             }
                         }
+                        "redirecting" -> {
+                            if (redirectDetectedAt == null) {
+                                redirectDetectedAt = now
+                                Timber.d("[Motasem] Intermediate redirect page detected ('سيتم الآن تحويلك'). Granting redirect grace period...")
+                            }
+                            // Do NOT call stopLoading() or force reload while redirect is legitimately in progress!
+                        }
+                    }
+
+                    // Check timeout condition
+                    val isExpired = if (redirectDetectedAt != null) {
+                        val redirectElapsed = now - redirectDetectedAt
+                        redirectElapsed >= redirectGraceMs || totalElapsed >= maxAbsoluteDeadlineMs
+                    } else {
+                        totalElapsed >= baseWaitMs
+                    }
+
+                    if (isExpired) {
+                        finalState = if (redirectDetectedAt != null) "redirect_timeout" else "timeout"
                         break
                     }
+
                     delay(150L)
                 }
 
                 val duration = SystemClock.elapsedRealtime() - startTime
-                Timber.d("[Motasem] Check result: $resultStr (duration: ${duration}ms)")
+                Timber.d("[Motasem] Final state evaluated: $finalState (duration: ${duration}ms, redirectDetected: ${redirectDetectedAt != null})")
 
-                return@withContext when (resultStr) {
+                return@withContext when (finalState) {
                     "success_two_devices" -> CardTestOutcome.twoDevicesSuccess(
                         message = "تم التحقق بنجاح: لا يمكن استعمال البطاقة في جهازين (البطاقة صالحة ونشطة)",
                         durationMs = duration
                     )
-                    "success" -> CardTestOutcome.success(
+                    "status_success" -> CardTestOutcome.success(
                         message = "تم اختبار البطاقة بنجاح: تم تسجيل الدخول إلى شبكة معتصم نت",
                         durationMs = duration
                     )
                     "failure" -> CardTestOutcome.failure(
                         message = "فشلت عملية الاختبار: بطاقة غير صالحة أو منتهية",
+                        durationMs = duration
+                    )
+                    "redirect_timeout" -> CardTestOutcome.timeout(
+                        message = "انتهت مهلة استجابة بوابة معتصم نت أثناء التحويل إلى صفحة الحالة (Redirect Timeout)",
                         durationMs = duration
                     )
                     else -> CardTestOutcome.timeout(

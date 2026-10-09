@@ -38,10 +38,31 @@ object ResultChecker {
         return matchesPhrase(lowerText) || matchesPhrase(lowerHtml)
     }
 
+    /**
+     * Detects intermediate captive portal redirect pages (e.g. Motasem redirect page with 4s delay).
+     */
+    fun isRedirecting(html: String, bodyText: String): Boolean {
+        val lowerHtml = html.lowercase()
+        val lowerText = bodyText.lowercase()
+        return lowerText.contains("سيتم الآن تحويلك") ||
+                lowerText.contains("سيتم الان تحويلك") ||
+                lowerHtml.contains("سيتم الآن تحويلك") ||
+                lowerHtml.contains("سيتم الان تحويلك") ||
+                lowerHtml.contains("تحويلك الى الموقع المطلوب") ||
+                lowerHtml.contains("تحويلك إلى الموقع المطلوب") ||
+                lowerHtml.contains("content=\"4;url=status.html\"") ||
+                (lowerHtml.contains("status.html") && lowerHtml.contains("refresh"))
+    }
+
     fun isSuccess(html: String, bodyText: String, router: RouterProfileEntity): Boolean {
         // Priority 1: Specific "cannot use card on two devices" portal notification is an immediate SUCCESS condition
         if (isTwoDevicesSuccess(html, bodyText)) {
             return true
+        }
+
+        // Intermediate redirect page is not yet an authenticated success status page
+        if (isRedirecting(html, bodyText)) {
+            return false
         }
 
         val lowerHtml = html.lowercase()
@@ -70,9 +91,12 @@ object ResultChecker {
         }
 
         // 4. Motasem Net (شبكة معتصم نت)
-        if (lowerText.contains("تفاصيل الأستخدام") &&
+        if ((lowerText.contains("تفاصيل الأستخدام") || lowerText.contains("تفاصيل الاستخدام")) &&
             (lowerHtml.contains("timeleft") || lowerText.contains("الوقت المتبقي") || lowerText.contains("الرصيد المتبقي"))
         ) {
+            return true
+        }
+        if (lowerHtml.contains("timeleft") && (lowerHtml.contains("section username") || lowerHtml.contains("wifi.sd.net/logout") || lowerHtml.contains("r.com/logout"))) {
             return true
         }
 
@@ -91,6 +115,11 @@ object ResultChecker {
     fun isFailure(html: String, bodyText: String, router: RouterProfileEntity): Boolean {
         // Critical: The "two devices" condition is a SUCCESS condition, never a failure!
         if (isTwoDevicesSuccess(html, bodyText)) {
+            return false
+        }
+
+        // Intermediate redirect page is not a failure!
+        if (isRedirecting(html, bodyText)) {
             return false
         }
 
@@ -186,6 +215,12 @@ object ResultChecker {
                 message = msg,
                 durationMs = durationMs,
                 subReason = sub
+            )
+        }
+        if (isRedirecting(html, bodyText)) {
+            return CardTestOutcome.timeout(
+                message = "انتهت مهلة استجابة الراوتر أثناء التحويل (Redirect Timeout)",
+                durationMs = durationMs
             )
         }
         return CardTestOutcome.timeout(
