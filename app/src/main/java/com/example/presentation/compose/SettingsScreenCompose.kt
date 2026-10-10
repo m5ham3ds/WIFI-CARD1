@@ -59,6 +59,7 @@ fun SettingsScreenCompose(
     val pageLoadDelayFlow by viewModel.pageLoadDelay.collectAsState(initial = 2000L)
     val cardTestDelayFlow by viewModel.cardTestDelay.collectAsState(initial = 3000L)
     val screenshotDelayFlow by viewModel.screenshotDelay.collectAsState(initial = 2000L)
+    val threadCountFlow by viewModel.threadCount.collectAsState(initial = prefs.getString("thread_count", "1")?.toIntOrNull() ?: 1)
 
     var vibrateEnabled by remember { mutableStateOf(prefs.getBoolean("vibrate_on_success", prefs.getBoolean("vibrate", true))) }
     var soundEnabled by remember { mutableStateOf(prefs.getBoolean("sound_on_success", prefs.getBoolean("sound", false))) }
@@ -84,7 +85,7 @@ fun SettingsScreenCompose(
     val pageLoadDelayVal = (pageLoadDelayFlow / 1000).coerceAtLeast(1)
     val cardTestDelayVal = (cardTestDelayFlow / 1000).coerceAtLeast(1)
     val screenshotDelayVal = (screenshotDelayFlow / 1000).coerceAtLeast(1)
-    val threadCountVal = prefs.getString("thread_count", "1") ?: "1"
+    val threadCountVal = threadCountFlow.toString()
 
     val scrollState = rememberScrollState()
 

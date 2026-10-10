@@ -403,4 +403,7 @@
     <string name="locked_screen_title">Application Locked</string>
     <string name="locked_screen_desc">Maximum wrong attempts exceeded (3 attempts).\nAccess has been locked to protect data.</string>
     <string name="locked_screen_close">Close Application</string>
+    <string name="dialog_reset_delays_title">Reset Delays to Default</string>
+    <string name="dialog_reset_delays_msg">Are you sure you want to reset all delay timings to default values (Page Load: 2s, Card Test: 3s, Screenshot: 2s)?</string>
+    <string name="btn_confirm_reset">Reset</string>
 </resources>

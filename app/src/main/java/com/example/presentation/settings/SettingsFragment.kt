@@ -74,14 +74,25 @@ class SettingsFragment : Fragment() {
                             )
                         },
                         onResetDelaysClick = {
-                            val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-                            prefs.edit()
-                                .putString("page_load_delay", "2000")
-                                .putString("card_test_delay", "3000")
-                                .putString("screenshot_delay", "2000")
-                                .apply()
-                            viewModel.resetDelaysToDefault()
-                            com.example.util.ToastHelper.showSuccessToast(requireContext(), getString(R.string.msg_reset_success))
+                            com.example.util.DialogHelper.showCustomDialog(
+                                context = requireContext(),
+                                title = getString(R.string.dialog_reset_delays_title),
+                                message = getString(R.string.dialog_reset_delays_msg),
+                                dialogType = com.example.util.DialogHelper.DialogType.WARNING,
+                                iconRes = R.drawable.ic_timer,
+                                positiveButtonText = getString(R.string.btn_confirm_reset),
+                                positiveAction = {
+                                    val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                                    prefs.edit()
+                                        .putString("page_load_delay", "2000")
+                                        .putString("card_test_delay", "3000")
+                                        .putString("screenshot_delay", "2000")
+                                        .apply()
+                                    viewModel.resetDelaysToDefault()
+                                    com.example.util.ToastHelper.showSuccessToast(requireContext(), getString(R.string.msg_reset_success))
+                                },
+                                negativeButtonText = getString(R.string.btn_cancel)
+                            )
                         },
                         onThemeClick = {
                             showThemeSelectionDialog()

@@ -68,13 +68,18 @@ class HomeViewModel(
     val lastCharset = appPreferences.lastCharset
     val defaultRouterId = appPreferences.defaultRouterId
 
+    private var lastObservedDefaultId: Long = -1L
+
     suspend fun getInitialSettings(): InitialSettings {
+        val lastOpRouter = appPreferences.lastOperationRouterId.first()
+        val defRouter = defaultRouterId.first()
+        val effectiveRouter = if (lastOpRouter > 0L) lastOpRouter else defRouter
         return InitialSettings(
             prefix = lastCardPrefix.first(),
             length = lastCardLength.first(),
             count = lastCardCount.first(),
             charset = lastCharset.first(),
-            defaultRouterId = defaultRouterId.first()
+            defaultRouterId = effectiveRouter
         )
     }
 
@@ -106,6 +111,30 @@ class HomeViewModel(
 
     init {
         observeLatestSession()
+        observeDefaultRouter()
+    }
+
+    private fun observeDefaultRouter() {
+        viewModelScope.launch {
+            kotlinx.coroutines.flow.combine(
+                manageRoutersUseCase.allRouters,
+                appPreferences.defaultRouterId
+            ) { routerList, prefDefaultId ->
+                Pair(routerList, prefDefaultId)
+            }.collect { (routerList, prefDefaultId) ->
+                if (routerList.isNotEmpty()) {
+                    val dbDefault = routerList.firstOrNull { it.isDefault }?.id
+                    val effectiveDefault = dbDefault ?: (if (routerList.any { it.id == prefDefaultId }) prefDefaultId else routerList.first().id)
+                    
+                    if (lastObservedDefaultId != effectiveDefault) {
+                        lastObservedDefaultId = effectiveDefault
+                        _selectedRouterId.value = effectiveDefault
+                    } else if (_selectedRouterId.value == -1L || !routerList.any { it.id == _selectedRouterId.value }) {
+                        _selectedRouterId.value = effectiveDefault
+                    }
+                }
+            }
+        }
     }
 
     private fun observeLatestSession() {
@@ -227,7 +256,7 @@ class HomeViewModel(
     ) {
         var routerId = _selectedRouterId.value
         if (routerId == -1L) {
-            val fallback = routers.value.firstOrNull()?.id ?: 1L
+            val fallback = routers.value.firstOrNull { it.isDefault }?.id ?: routers.value.firstOrNull()?.id ?: 1L
             routerId = fallback
             _selectedRouterId.value = fallback
         }
@@ -242,7 +271,7 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 // Save settings locally
-                appPreferences.saveHomeSettings(prefix, length, count, charset, routerId)
+                appPreferences.saveLastOperationSnapshot(prefix, length, count, charset, routerId)
 
                 // Generate
                 val cards = generateCardsUseCase(prefix, length, count, charset)

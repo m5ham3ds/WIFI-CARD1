@@ -12,7 +12,7 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
     viewModel { HistoryViewModel(get(), get(), get()) }
     viewModel { SettingsViewModel(get(), get(), get(), get(), get()) }
-    viewModel { RouterManagerViewModel(get()) }
+    viewModel { RouterManagerViewModel(get(), get()) }
     viewModel { TestViewModel(get(), get()) }
     viewModel { com.example.presentation.security.SecurityViewModel(get()) }
 }

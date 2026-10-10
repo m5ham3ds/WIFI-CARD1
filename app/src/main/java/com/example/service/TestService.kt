@@ -419,8 +419,10 @@ class TestService : Service(), KoinComponent {
         maxRetries: Int = 3,
         perAttemptTimeoutMs: Long = 4000L
     ): Boolean {
+        val configuredPageWait = try { appPreferences.pageLoadDelay.first() } catch (_: Exception) { 2000L }
+        val effectiveWait = perAttemptTimeoutMs.coerceAtLeast(configuredPageWait)
         for (attempt in 1..maxRetries) {
-            val isReady = ensureFreshLoginPage(webView, router, strategy, maxWaitMs = perAttemptTimeoutMs)
+            val isReady = ensureFreshLoginPage(webView, router, strategy, maxWaitMs = effectiveWait)
             if (isReady) return true
             Timber.w("Fresh login page check failed on attempt $attempt/$maxRetries. Attempting recovery...")
             delay(500L)
@@ -643,6 +645,8 @@ class TestService : Service(), KoinComponent {
                 val isLowRam = activityManager?.isLowRamDevice == true
                 val maxSafePool = if (isLowRam) 1 else 3
                 val poolSize = requestedPoolSize.coerceIn(1, maxSafePool)
+                val configuredCardDelay = try { appPreferences.cardTestDelay.first() } catch (_: Exception) { 3000L }
+                val effectiveDelay = if (delayMs > 0 && delayMs != 1200L) delayMs else configuredCardDelay
                 
                 val router = withContext(Dispatchers.IO) {
                     routerRepository.getById(routerId)
@@ -854,7 +858,7 @@ class TestService : Service(), KoinComponent {
                                     webView = webView,
                                     evaluateJsSafely = { js -> evaluateJsSafely(webView, js) },
                                     pauseCondition = { while (_serviceState.value.isPaused) { delay(500) } },
-                                    isPreloaded = true,
+                                    isPreloaded = enablePreload,
                                     onRequiresGlobalRelogin = onRequiresGlobalRelogin,
                                     isBlockedBySuccess = { isBlockedBySuccess.get() },
                                     capturedAlert = {
@@ -882,7 +886,7 @@ class TestService : Service(), KoinComponent {
                                 cardToRetry = currentCard
                                 while (isBlockedBySuccess.get()) { delay(500) }
                                 ensureFreshLoginPageWithRecovery(webView, router, strategy)
-                                delay(delayMs)
+                                delay(effectiveDelay)
                                 continue
                             }
 
@@ -899,7 +903,7 @@ class TestService : Service(), KoinComponent {
                                 isBlockedBySuccess = isBlockedBySuccess,
                                 stateMutex = stateMutex,
                                 cardListSize = cardList.size,
-                                delayMs = delayMs,
+                                delayMs = effectiveDelay,
                                 lifecycleStateConsumer = { st -> lifecycleState = st }
                             )
 
@@ -964,7 +968,8 @@ class TestService : Service(), KoinComponent {
         screenshotJob = serviceScope.launch {
             val prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this@TestService)
             while (true) {
-                val delayMs = prefs.getString("screenshot_delay", "2000")?.toLongOrNull() ?: 2000L
+                val configuredScreenshotDelay = try { appPreferences.screenshotDelay.first() } catch (_: Exception) { 2000L }
+                val delayMs = prefs.getString("screenshot_delay", null)?.toLongOrNull() ?: configuredScreenshotDelay
                 delay(delayMs)
                 val bitmap = captureScreenshot()
                 if (bitmap != null) {

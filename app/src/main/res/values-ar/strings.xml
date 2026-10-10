@@ -413,6 +413,8 @@
 
 
 
-
+    <string name="dialog_reset_delays_title">إعادة ضبط أوقات الانتظار</string>
+    <string name="dialog_reset_delays_msg">هل أنت متأكد من رغبتك في إعادة ضبط جميع أوقات الانتظار إلى القيم الافتراضية (تحميل الصفحة: 2 ث، فحص البطاقة: 3 ث، لقطة الشاشة: 2 ث)؟</string>
+    <string name="btn_confirm_reset">إعادة ضبط</string>
 
 </resources>

@@ -77,12 +77,16 @@ fun HomeScreenCompose(
     LaunchedEffect(routers) {
         if (selectedRouterId == -1L && routers.isNotEmpty()) {
             val initial = viewModel.getInitialSettings()
-            val def = routers.firstOrNull { it.id == initial.defaultRouterId } ?: routers.first()
+            val def = routers.firstOrNull { it.isDefault }
+                ?: routers.firstOrNull { it.id == initial.defaultRouterId }
+                ?: routers.first()
             viewModel.selectRouter(def.id)
         }
     }
 
-    val currentRouter = routers.firstOrNull { it.id == selectedRouterId } ?: routers.firstOrNull()
+    val currentRouter = routers.firstOrNull { it.id == selectedRouterId }
+        ?: routers.firstOrNull { it.isDefault }
+        ?: routers.firstOrNull()
     val isServiceRunning by viewModel.isServiceRunning().collectAsState()
     val isTesting = (uiState is HomeViewModel.UiState.Testing) && isServiceRunning
 

@@ -14,8 +14,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+import com.example.data.local.preferences.AppPreferences
+import kotlinx.coroutines.flow.first
+
 class RouterManagerViewModel(
-    private val manageRoutersUseCase: ManageRoutersUseCase
+    private val manageRoutersUseCase: ManageRoutersUseCase,
+    private val appPreferences: AppPreferences
 ) : BaseViewModel() {
 
     sealed class UiEvent {
@@ -46,6 +50,14 @@ class RouterManagerViewModel(
     fun deleteRouter(router: RouterProfileEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             manageRoutersUseCase.deleteRouter(router)
+            if (router.isDefault) {
+                val remaining = manageRoutersUseCase.allRouters.first()
+                val nextDef = remaining.firstOrNull { it.id != router.id }
+                if (nextDef != null) {
+                    manageRoutersUseCase.setDefault(nextDef.id)
+                    appPreferences.setDefaultRouterId(nextDef.id)
+                }
+            }
             _uiEvent.emit(UiEvent.ShowMessage(R.string.router_deleted))
         }
     }
@@ -53,6 +65,7 @@ class RouterManagerViewModel(
     fun setDefaultRouter(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             manageRoutersUseCase.setDefault(id)
+            appPreferences.setDefaultRouterId(id)
         }
     }
 }

@@ -33,6 +33,9 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
         val KEY_LAST_CARD_LENGTH = intPreferencesKey("last_card_length")
         val KEY_LAST_CARD_COUNT = intPreferencesKey("last_card_count")
         val KEY_LAST_CHARSET = stringPreferencesKey("last_charset")
+        val KEY_LAST_OPERATION_ROUTER_ID = longPreferencesKey("last_operation_router_id")
+        val KEY_LAST_OPERATION_TIMESTAMP = longPreferencesKey("last_operation_timestamp")
+        val KEY_LAST_OPERATION_SESSION_ID = longPreferencesKey("last_operation_session_id")
 
         fun getLanguageSync(context: Context): String {
             return com.example.util.LocaleHelper.getPersistedLocale(context)
@@ -73,10 +76,13 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
         }
     }
     
-    val lastCardPrefix: Flow<String> = safeData.map { it[KEY_LAST_CARD_PREFIX] ?: "" }
+    val lastCardPrefix: Flow<String> = safeData.map { it[KEY_LAST_CARD_PREFIX] ?: "D" }
     val lastCardLength: Flow<Int> = safeData.map { it[KEY_LAST_CARD_LENGTH] ?: 6 }
-    val lastCardCount: Flow<Int> = safeData.map { it[KEY_LAST_CARD_COUNT] ?: 10 }
+    val lastCardCount: Flow<Int> = safeData.map { it[KEY_LAST_CARD_COUNT] ?: 50 }
     val lastCharset: Flow<String> = safeData.map { it[KEY_LAST_CHARSET] ?: "0123456789" }
+    val lastOperationRouterId: Flow<Long> = safeData.map { it[KEY_LAST_OPERATION_ROUTER_ID] ?: 0L }
+    val lastOperationTimestamp: Flow<Long> = safeData.map { it[KEY_LAST_OPERATION_TIMESTAMP] ?: 0L }
+    val lastOperationSessionId: Flow<Long> = safeData.map { it[KEY_LAST_OPERATION_SESSION_ID] ?: 0L }
 
     suspend fun saveHomeSettings(prefix: String, length: Int, count: Int, charset: String, routerId: Long) {
         dataStore.edit { prefs ->
@@ -85,8 +91,31 @@ class AppPreferences(private val dataStore: DataStore<Preferences>) {
             prefs[KEY_LAST_CARD_COUNT] = count
             prefs[KEY_LAST_CHARSET] = charset
             if (routerId != -1L) {
-                prefs[KEY_DEFAULT_ROUTER_ID] = routerId
+                prefs[KEY_LAST_OPERATION_ROUTER_ID] = routerId
             }
+        }
+    }
+
+    suspend fun saveLastOperationSnapshot(
+        prefix: String,
+        length: Int,
+        count: Int,
+        charset: String,
+        routerId: Long,
+        sessionId: Long = 0L
+    ) {
+        dataStore.edit { prefs ->
+            prefs[KEY_LAST_CARD_PREFIX] = prefix
+            prefs[KEY_LAST_CARD_LENGTH] = length
+            prefs[KEY_LAST_CARD_COUNT] = count
+            prefs[KEY_LAST_CHARSET] = charset
+            if (routerId != -1L) {
+                prefs[KEY_LAST_OPERATION_ROUTER_ID] = routerId
+            }
+            if (sessionId != 0L) {
+                prefs[KEY_LAST_OPERATION_SESSION_ID] = sessionId
+            }
+            prefs[KEY_LAST_OPERATION_TIMESTAMP] = System.currentTimeMillis()
         }
     }
 
